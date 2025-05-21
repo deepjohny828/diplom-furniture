@@ -1,0 +1,76 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}
+    Главная
+{% endblock title %}
+
+{% block style %}{% endblock style %}
+
+{% block content %}
+<div class="slider" id="bannerSlider">
+    <div class="slides">
+        <div class="slide"><img src={% static 'products/img/ss.jpg.webp' %} alt="Тест"><div class="slide-content">
+            {% comment %} <h2>Скидка 10%</h2><p>На кухонный стол</p><a href="#">Подробнее</a> {% endcomment %}
+        </div></div>
+        <div class="slide"><img src={% static 'products/img/j.jpg.webp' %} alt="Тест"><div class="slide-content">
+            {% comment %} <h2>Товар дня</h2><p>Суперцены только сегодня</p><a href="#">Купить</a> {% endcomment %}
+            </div></div>
+        <div class="slide"><img src={% static 'products/img/t.jpg.webp' %} alt="Тест"><div class="slide-content">
+            {% comment %} <h2>Гарантия и сервис</h2><p>Лучшие условия</p><a href="#">Подробнее</a> {% endcomment %}
+        </div></div>
+    </div>
+    <div class="slider-buttons"><button id="prev">&#10094;</button><button id="next">&#10095;</button></div>
+    <div class="dots" id="dotsContainer"></div>
+</div>
+<div>
+    <h2 class="title-hits">Новинка</h2>
+    <div class="products">
+    {% for product in products %}
+        <div class="product-card">
+            <span class="badge">ХИТ!</span>
+            <img src={{product.image.url}} alt="Изображение продукции">
+            <div class="price">{{products.price}} руб.<span class="old-price">{{products.price}} руб.</span><span class="discount">-{{product.discount}}%</span></div>
+            <div class="text-products">{{product.name}}, Белый</div>
+            <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+        </div>
+    {% endfor %}
+    </div>
+        {% comment %} <div class="product-card">
+            <span class="badge">NEW</span>
+            <img src={% static 'products/img/32.jpg' %} alt="Тест">
+            <div class="price">30 699 руб. <span class="old-price">81 799 руб.</span><span class="discount">-63%</span></div>
+            <div class="text-products">Модульная кухня Квадро Оливково-зеленый</div>
+            <button>Купить</button>
+        </div>
+        <div class="product-card">
+            <span class="badge red">-20% SUPER КЕШБЕК</span>
+            <img src={% static 'products/img/2.webp' %} alt="Тест">
+            <div class="price">30 299 руб. <span class="old-price">80 999 руб.</span><span class="discount">-63%</span></div>
+            <div class="text-products">Модульная кухня Мелисса Графит Скин</div>
+            <button>Купить</button>
+        </div>
+        <div class="product-card">
+            <span class="badge red">-20% SUPER КЕШБЕК</span>
+            <img src={% static 'products/img/600.webp' %} alt="Тест">
+            <div class="price">30 299 руб. <span class="old-price">80 999 руб.</span><span class="discount">-63%</span></div>
+            <div class="text-products">Модульная кухня Мелисса Графит Скин</div>
+            <button>Купить</button>
+        </div>
+    </div> {% endcomment %}
+</div>
+<div class="container">
+    <div>
+        <h3 style="text-align: center; border:3px solid #e24a3a; border-radius: 10px; padding:15px"><a href={% url "product_list" %}>Посмотреть все предложения...</a></h3>
+    </div>
+    <div class="about-company">
+        <img src={% static 'products/img/test.jpg' %} alt="Тест">
+        <div class="about-text"><h2>О компании</h2><p>Бизнес-идея ООО "Вертикаль" — экономия времени и денег наших клиентов.</p><a href="#">Подробнее →</a></div>
+    </div>
+    <div class="subscribe"><h3>Подписка на акции</h3><input type="email" placeholder="Ваш E-mail"><button>Подписаться</button></div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src={% static 'products/js/slider.js' %}></script>
+{% endblock scripts %}

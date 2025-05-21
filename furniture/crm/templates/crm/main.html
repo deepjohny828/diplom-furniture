@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Моя CRM{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'crm/css/diagram.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{% static 'crm/js/new-query-crm.js' %}" defer></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    header button {
+      background: #fff;
+      color: #4CAF50;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    header button:hover {
+      background: #f1f1f1;
+    }
+
+    #div-myChart {
+      max-width: 600px;
+      height: 50%;
+      margin: 40px auto;
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    #myChart {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+
+    .crm-entry {
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .paginator {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .paginator a {
+      margin: 0 5px;
+      text-decoration: none;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 8% auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    form input, form select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    form button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button id="btn-query">Добавить новую запись</button>
+  </header>
+
+  <div id="div-myChart">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <main>
+    <div class="crm-entry">
+      <span>Название</span>
+      <span>Количество</span>
+      <span>Стоимость</span>
+      <span>Операция</span>
+    </div>
+    {% for el in elements %}
+    <div class="crm-entry">
+      <span>{{ el.name }}</span>
+      <span>{{ el.count }}</span>
+      <span>{{ el.price }} рублей</span>
+      <span>{{ el.type_operation }}</span>
+    </div>
+    {% endfor %}
+
+    <div class="paginator">
+      <span class="step-links">
+        {% if elements.has_previous %}
+          <a href="?page=1">&laquo; 1</a>
+          <a href="?page={{elements.previous_page_number}}">Предыдущая</a>
+        {% endif %}
+        <span class="current">Страница {{elements.number}} из {{elements.paginator.num_pages}}</span>
+        {% if elements.has_next %}
+          <a href="?page={{elements.next_page_number}}">Следующая</a>
+          <a href="?page={{elements.paginator.num_pages}}">Последняя</a>
+        {% endif %}
+      </span>
+    </div>
+  </main>
+
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Добавить новую запись</h2>
+      <form action="{% url 'crm_index' %}" method="post" id="contactForm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById("myModal");
+    const btn = document.getElementById("btn-query");
+    const span = document.querySelector(".close");
+
+    btn.onclick = () => modal.style.display = "block";
+    span.onclick = () => modal.style.display = "none";
+    window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const ctx = document.getElementById('myChart');
+      const el_type = document.querySelectorAll(".crm-entry .el-type");
+      const el_count = document.querySelectorAll(".crm-entry .el-count");
+      const el_price = document.querySelectorAll(".crm-entry .el-price");
+
+      let income = 0;
+      let expense = 0;
+
+      {% for el in elements %}
+        const price{{ forloop.counter }} = parseFloat({{ el.price }});
+        const count{{ forloop.counter }} = parseInt({{ el.count }});
+        const total{{ forloop.counter }} = price{{ forloop.counter }} * count{{ forloop.counter }};
+        {% if el.type_operation.name == "Доход" %}
+          income += total{{ forloop.counter }};
+        {% else %}
+          expense += total{{ forloop.counter }};
+        {% endif %}
+      {% endfor %}
+
+      const chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Расход', 'Доход'],
+          datasets: [{
+            data: [expense, income],
+            backgroundColor: ['#e53935', '#43a047'],
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom' },
+            title: { display: true, text: 'Статистика операций' }
+          }
+        }
+      });
+
+      window.addEventListener('resize', () => chart.resize());
+    });
+  </script>
+</body>
+</html>

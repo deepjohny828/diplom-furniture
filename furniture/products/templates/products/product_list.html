@@ -1,0 +1,96 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}
+  {% if sel_cat %}
+    Каталог - {{ sel_cat.name }} 
+  {% else %}
+    Каталог - Вся продукция 
+  {% endif %}
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'products/css/catalog-style.css' %}">
+{% endblock style %}
+
+{% block content %}
+<h3>
+  {% if sel_cat %}
+    Категория: {{ sel_cat.name }}
+  {% else %}
+    Вся продукция
+  {% endif %}
+</h3>
+
+<div class="catalog-grid">
+  <!-- Фильтры -->
+  <aside class="sidebar">
+    <form method="get" action="{% url 'product_list' %}">
+      <div class="price-range">
+        <h3>Цена</h3>
+        <div class="price-range-inp">
+          <input type="number" name="min_price" placeholder="От 19" value="{{ request.GET.min_price }}">
+          <input type="number" name="max_price" placeholder="До 247649" value="{{ request.GET.max_price }}">
+        </div>
+      </div>
+      <div>
+        <h3>Категории</h3>
+        <select name="category">
+          <option value="">Все категории</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"i" %}selected{% endif %}>
+            {{ category.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Дополнительные фильтры -->
+      <div>
+        <h3>Тип</h3>
+        <label><input type="checkbox"> Соединительная</label>
+        <label><input type="checkbox"> ХДФ</label>
+      </div>
+      <div>
+        <h3>Тип поверхности</h3>
+        <label><input type="checkbox"> Глянцевая</label>
+        <label><input type="checkbox"> Матовая</label>
+      </div>
+      <div>
+        <h3>Материал фасада</h3>
+        <label><input type="checkbox"> ЛДСП</label>
+        <label><input type="checkbox"> ЛДСП/Стекло</label>
+        <label><input type="checkbox"> МДФ</label>
+        <label><input type="checkbox"> МДФ/Стекло</label>
+        <label><input type="checkbox"> Стекло</label>
+      </div>
+      <div>
+        <h3>Покрытие фасада</h3>
+        <label><input type="checkbox"> Акрилит</label>
+      </div>
+      <button type="submit">Фильтровать</button>
+    </form>
+  </aside>
+
+  <!-- Карточки товаров -->
+  <main class="products">
+    {% for product in products %}
+    <div class="product-card">
+      <a href="{% url 'product_detail' product.slug %}">
+        <span class="badge">Бестселлер</span>
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        <div class="price">
+          <span>{{ product.price }} руб.</span>
+          {% if product.old_price %}
+          <span class="old-price">{{ product.old_price }} руб.</span>
+          <span class="discount">-{{ product.discount_percent }}%</span>
+          {% endif %}
+        </div>
+        <p>{{ product.name }}</p>
+        <p class="in-stock">{% if product.in_stock %}В наличии{% else %}Нет в наличии{% endif %}</p>
+      </a>
+      <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+    </div>
+    {% endfor %}
+  </main>
+</div>
+{% endblock content %}

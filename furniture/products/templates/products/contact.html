@@ -1,0 +1,37 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block title %}Контакты{% endblock title %}
+{% block style %}
+<link rel="stylesheet" href={% static 'products/css/contact.css' %}>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+{% endblock style %}
+
+{% block content %}
+<section class="contacts">
+    <div class="contacts-container">
+        <h1>Контакты</h1>
+        <div class="contact-info">
+            <p><i class="fa-solid fa-location-dot"></i> г. Вологда, ул. Ильюшина, 95 (пункт выдачи)</p>
+            <p><i class="fa-solid fa-phone"></i> 8 (800) 500-62-05</p>
+            <p><i class="fa-solid fa-clock"></i> Пн. - Пт.: с 9:00 до 18:00</p>
+        </div>
+
+        <div class="order-call">
+            <p>Хотите, чтобы мы с вами связались? Оставьте заявку, и мы вам перезвоним!</p>
+            <button class="btn order-call-btn">Заказать звонок</button>
+        </div>
+        
+        <div class="delivery-info">
+            <p><span class="highlight">Доставим заказ в г. Вологда или любой другой населённый пункт РФ!</span></p>
+        </div>
+
+        <div id="map" class="map"></div>
+    </div>
+</section>
+{% endblock content %}
+{% block scripts %}
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=your_api_key&lang=ru_RU" type="text/javascript"></script>
+    <script src={% static 'products/js/contact.js' %}></script>
+{% endblock scripts %}
+

@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href={% static 'products/css/modal-form.css' %}>
+    {% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> {% endcomment %}
+    <link rel="stylesheet" href={% static 'products/css/base.css' %}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    {% block style %}{% endblock style %}
+</head>
+<body>
+    <header>
+      <div class="header-top">
+          <div class="location"><i class="fa-solid fa-location-dot"></i> Вологда</div>
+          <div class="menu"><div>Акции</div><div>Доставка</div><div>Контакты</div><div>НадоБонусы</div></div>
+          <div class="phone"><span>Заказать звонок</span> 8 (800) 500-62-05</div>
+      </div>
+      <div class="header-main">
+          <div class="logo">
+            <a href={% url "index" %}><img src={% static 'products/img/logo.png' %} alt="Логотип"></a>
+          </div>
+          {% comment %} ЦИКЛ КАТЕГОРИЙ СДЕЛАТЬ {% endcomment %}
+          <div class="catalog-wrapper">
+            <button id="catalogBtn" class="catalog-btn">Каталог</button>
+          </div>
+          
+          <!-- Мега-меню -->
+          <div id="megaMenu" class="mega-menu hidden">
+            <div class="mega-left">
+              <div class="category selected" data-target="kitchen"><i>🍴</i> Кухня</div>
+              <div class="category" data-target="chairs"><i>🪑</i> Столы и стулья</div>
+              <div class="category" data-target="sofas"><i>🛋️</i> Мягкая мебель</div>
+            </div>
+            <div class="mega-right">
+              <div class="submenu active" id="kitchen">
+                <h4>Кухни поэлементно</h4>
+                <ul>
+                  <li>Модульные кухни</li>
+                  <li>Кухни с барной стойкой</li>
+                  <li>Кухни с островом</li>
+                </ul>
+                <h4>Стиль</h4>
+                <ul>
+                  <li>Кухни под дерево</li>
+                  <li>Современные кухни</li>
+                </ul>
+              </div>
+          
+              <div class="submenu" id="chairs">
+                <h4>Столы</h4>
+                <ul>
+                  <li>Обеденные</li>
+                  <li>Компьютерные</li>
+                </ul>
+                <h4>Стулья</h4>
+                <ul>
+                  <li>Деревянные</li>
+                  <li>Пластиковые</li>
+                </ul>
+              </div>
+          
+              <div class="submenu" id="sofas">
+                <h4>Мягкая мебель</h4>
+                <ul>
+                  <li>Угловые диваны</li>
+                  <li>Прямые диваны</li>
+                  <li>Кресла</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="search-bar"><input type="text" placeholder="Я хочу купить..."><button><i class="fa fa-search"></i></button></div>
+          <div class="header-icons"><div><i class="fa fa-user"></i><br>Войти</div><div><i class="fa fa-chart-bar"></i><br>Сравнение</div><div><i class="fa fa-heart"></i><br>Избранное</div><div><i class="fa fa-cart-shopping"></i><br>Корзина</div></div>
+      </div>
+      
+    </header>
+    <main class="container mt-4">
+        {% block content %}{% endblock %}
+    </main>
+    <div class="footer">
+      <div class="footer-columns">
+          <div class="footer-column">
+            <h4>Компания</h4>
+            <ul>
+              <li><a href={% url "contacts" %}>Контакты</a></li>
+              <li><a href="#">Реквизиты</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Оплата</h4>
+            <ul>
+              <li><a href="#">Способы оплаты</a></li>
+              <li><a href="#">Оферта</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Сервис</h4>
+            <ul>
+              <li><a href="#">Доставка</a></li>
+              <li><a href="#">Возврат</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Каталог</h4>
+            <ul>
+              <li><a href="#">Все товары</a></li>
+              <li><a href="#">Акции</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Контакты</h4>
+            <ul>
+              <li>8 (800) 500-62-05</li>
+              <li>г. Вологда</li>
+            </ul>
+          </div>
+      </div>
+      <div class="footer-bottom"><p>2013 - 2025 © ООО "Вертикаль"</p></div>
+  </div>
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Форма обратной связи</h2>
+        {% comment %} <form id="contactForm"> {% endcomment %}
+          <form action={% url 'product_list' %} id="contactForm" method="post">
+              {% csrf_token %}
+              {{form.as_p}}
+              {% if form.errors %}
+              <div style="color: red;">
+                  <strong>Ошибки формы:</strong>
+                  {{ form.errors }}
+              </div>
+              {% endif %}
+              {% comment %} <div class="form-group"> {% endcomment %}
+              <button type="submit">Отправить</button>
+          </form>
+                {% comment %} <label for="name">Имя:</label>
+                <input type="text" id="name" name="name" required> {% endcomment %}
+            {% comment %} </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Сообщение:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+            </div> {% endcomment %}
+
+    </div>
+</div>
+</body>
+  <script src={%static 'products/js/modal-form.js'%}></script>
+  <script src={% static 'products/js/button-catalog.js' %}></script>
+  {% block scripts %}{% endblock scripts %}
+</html>
