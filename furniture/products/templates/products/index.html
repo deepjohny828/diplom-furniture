@@ -27,13 +27,22 @@
     <h2 class="title-hits">Новинка</h2>
     <div class="products">
     {% for product in products %}
-        <div class="product-card">
-            <span class="badge">ХИТ!</span>
-            <img src={{product.image.url}} alt="Изображение продукции">
-            <div class="price">{{products.price}} руб.<span class="old-price">{{products.price}} руб.</span><span class="discount">-{{product.discount}}%</span></div>
-            <div class="text-products">{{product.name}}, Белый</div>
-            <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
-        </div>
+    <div class="product-card">
+        <a href="{% url 'product_detail' product.slug %}">
+            <span class="badge">Бестселлер</span>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="price">
+            <span>{{ product.price }} руб.</span>
+            {% if product.price %}
+            <span class="old-price">{{ product.price}} руб.</span>
+            <span class="discount">-{{ product.discount }}%</span>
+            {% endif %}
+            </div>
+            <p>{{ product.name }}</p>
+            <p class="in-stock">{% if product.available %}В наличии{% else %}Нет в наличии{% endif %}</p>
+        </a>
+        <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+    </div>
     {% endfor %}
     </div>
         {% comment %} <div class="product-card">

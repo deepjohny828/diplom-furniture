@@ -89,6 +89,7 @@
         <p class="in-stock">{% if product.in_stock %}В наличии{% else %}Нет в наличии{% endif %}</p>
       </a>
       <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+      <a href="{% url 'add_to_compare' product.id %}">Добавить к сравнению</a>
     </div>
     {% endfor %}
   </main>

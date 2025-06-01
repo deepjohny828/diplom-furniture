@@ -1,0 +1,139 @@
+{% extends "products/base.html" %}
+{% load static %}
+{% block title %}Сравнение продукции{% endblock title %}
+
+{% block style %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 20px;
+        background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        color: #2c3e50;
+        font-size: 2.5em;
+    }
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    .comparison-table {
+        display: grid;
+        grid-template-columns: repeat({{ products|length }}, 300px);
+        column-gap: 40px;
+        row-gap: 0;
+        background: none;
+        text-align: center;
+        border-radius: 10px;
+        min-width: 1000px;
+        align-items: first baseline;
+    }
+    .comparison-table div {
+        background: #ffffff;
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100px;
+        box-sizing: border-box;
+    }
+    .header {
+        background: #37474f;
+        color:  #607d8b;
+        font-weight: bold;
+        font-size: 1.1em;
+        text-transform: uppercase;
+    }
+    .image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .label {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #607d8b;
+    }
+</style>
+{% endblock style %}
+
+{% block content %}
+<h1>Сравнение продукции</h1>
+<div class="table-wrapper">
+  <div class="comparison-table">
+
+    {% for product in products %}
+      <div class="header"><p>{{ product.name }}</p></div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Изображение</p>
+        <img src="{{ product.image.url }}" class="image" alt="{{ product.name }}">
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Цена</p>
+        <span>{{ product.price }} ₽</span>
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Вес</p>
+        <span>{{ product.weight }} кг</span>
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Материал</p>
+        <span>{{ product.material }}</span>
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Цвет</p>
+        <span>{{ product.color }}</span>
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Категория</p>
+        <span>{{ product.category.name }}</span>
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Артикул</p>
+        <span>{{ product.article_number }}</span>
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Добавлен</p>
+        <span>{{ product.created_at|date:"d.m.Y" }}</span>
+      </div>
+    {% endfor %}
+
+    {% for product in products %}
+      <div>
+        <p class="label">Обновлён</p>
+        <span>{{ product.updated_at|date:"d.m.Y" }}</span>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock content %}

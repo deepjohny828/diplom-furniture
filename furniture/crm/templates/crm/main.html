@@ -144,7 +144,7 @@
 </head>
 <body>
   <header>
-    <button id="btn-query">Добавить новую запись</button>
+    {% comment %} <button id="btn-query">Добавить новую запись</button> {% endcomment %}
   </header>
 
   <div id="div-myChart">
@@ -194,57 +194,46 @@
     </div>
   </div>
 
-  <script>
-    const modal = document.getElementById("myModal");
-    const btn = document.getElementById("btn-query");
-    const span = document.querySelector(".close");
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('myChart');
+    let income = 0;
+    let expense = 0;
 
-    btn.onclick = () => modal.style.display = "block";
-    span.onclick = () => modal.style.display = "none";
-    window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
+    {% for el in elements %}
+      const price{{ forloop.counter }} = parseFloat({{ el.price|safe }});
+      const count{{ forloop.counter }} = 1;
+      const total{{ forloop.counter }} = price{{ forloop.counter }} * count{{ forloop.counter }};
+      {% if el.type_operation == "Продажи" %}
+        income += total{{ forloop.counter }};
+      {% else %}
+        expense += total{{ forloop.counter }};
+      {% endif %}
+    {% endfor %}
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const ctx = document.getElementById('myChart');
-      const el_type = document.querySelectorAll(".crm-entry .el-type");
-      const el_count = document.querySelectorAll(".crm-entry .el-count");
-      const el_price = document.querySelectorAll(".crm-entry .el-price");
-
-      let income = 0;
-      let expense = 0;
-
-      {% for el in elements %}
-        const price{{ forloop.counter }} = parseFloat({{ el.price }});
-        const count{{ forloop.counter }} = parseInt({{ el.count }});
-        const total{{ forloop.counter }} = price{{ forloop.counter }} * count{{ forloop.counter }};
-        {% if el.type_operation.name == "Доход" %}
-          income += total{{ forloop.counter }};
-        {% else %}
-          expense += total{{ forloop.counter }};
-        {% endif %}
-      {% endfor %}
-
-      const chart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Расход', 'Доход'],
-          datasets: [{
-            data: [expense, income],
-            backgroundColor: ['#e53935', '#43a047'],
-            hoverOffset: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: 'bottom' },
-            title: { display: true, text: 'Статистика операций' }
-          }
+    new Chart(ctx, {
+      {% comment %} doughnut {% endcomment %}
+      {% comment %} bar {% endcomment %}
+      type: 'doughnut',
+      data: {
+        labels: ['Закупки', 'Продажи'],
+        datasets: [{
+          data: [expense, income],
+          backgroundColor: ['#e53935', '#43a047'],
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: 'Статистика операций' }
         }
-      });
-
-      window.addEventListener('resize', () => chart.resize());
+      }
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
