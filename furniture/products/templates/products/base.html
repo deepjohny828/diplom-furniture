@@ -16,7 +16,7 @@
       <div class="header-top">
           <div class="location"><i class="fa-solid fa-location-dot"></i> Вологда</div>
           <div class="menu"><div>Акции</div><div>Доставка</div><div>Контакты</div><div>НадоБонусы</div></div>
-          <div class="phone"><span>Заказать звонок</span> 8 (800) 500-62-05</div>
+          <div class="phone"><a>Заказать звонок</a> 8 (800) 500-62-05</div>
       </div>
       <div class="header-main">
           <div class="logo">
@@ -30,25 +30,10 @@
           <!-- Мега-меню -->
           <div id="megaMenu" class="mega-menu hidden">
             <div class="mega-left">
-              <div class="category selected" data-target="kitchen"><i>🍴</i> Кухня</div>
               <div class="category" data-target="chairs"><i>🪑</i> Столы и стулья</div>
               <div class="category" data-target="sofas"><i>🛋️</i> Мягкая мебель</div>
             </div>
             <div class="mega-right">
-              <div class="submenu active" id="kitchen">
-                <h4>Кухни поэлементно</h4>
-                <ul>
-                  <li>Модульные кухни</li>
-                  <li>Кухни с барной стойкой</li>
-                  <li>Кухни с островом</li>
-                </ul>
-                <h4>Стиль</h4>
-                <ul>
-                  <li>Кухни под дерево</li>
-                  <li>Современные кухни</li>
-                </ul>
-              </div>
-          
               <div class="submenu" id="chairs">
                 <h4>Столы</h4>
                 <ul>
@@ -73,7 +58,9 @@
             </div>
           </div>
           <div class="search-bar"><input type="text" placeholder="Я хочу купить..."><button><i class="fa fa-search"></i></button></div>
-          <div class="header-icons"><div><i class="fa fa-user"></i><br>Войти</div><div><i class="fa fa-chart-bar"></i><br>Сравнение</div><div><i class="fa fa-heart"></i><br>Избранное</div><div><i class="fa fa-cart-shopping"></i><br>Корзина</div></div>
+          <div class="header-icons">
+            <div><i class="fa fa-chart-bar"></i><br>Сравнение</div>
+            <div><i class="fa fa-cart-shopping"></i><br>Корзина</div></div>
       </div>
       
     </header>
@@ -124,9 +111,9 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Форма обратной связи</h2>
-        {% comment %} <form id="contactForm"> {% endcomment %}
           <form action={% url 'product_list' %} id="contactForm" method="post">
               {% csrf_token %}
+              <div id="hiddenProducts"></div>
               {{form.as_p}}
               {% if form.errors %}
               <div style="color: red;">

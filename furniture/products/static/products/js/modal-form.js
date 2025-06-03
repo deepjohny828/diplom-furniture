@@ -5,13 +5,35 @@ const span = document.getElementsByClassName("close")[0];
 const form = document.getElementById("contactForm");
 
 
-    // Открываем модальное окно при клике на кнопку
 btn.forEach(e => {
     e.onclick = () =>{
-        const product_id = e.dataset.product_id
-        document.getElementById("id_product").value = product_id
+        const productIds = [];
+        if (window.location.pathname === "/group_products/"){
+                document.querySelectorAll('.item').forEach(item => {
+                const productId = item.dataset.id;
+                productIds.push(productId);
+            });
+        }
+        else{
+            const productId = e.dataset.product_id;
+            productIds.push(productId);
+        }
+        const container = document.getElementById('hiddenProducts')
+        container.innerHTML = '';
+
+        productIds.forEach(id =>{
+            const input = document.createElement('input')
+            input.type = 'hidden';
+            input.name = 'products';
+            input.value = id;
+            container.appendChild(input)
+        });
+
         modal.style.display = "block";
     }
+    
+
+    
 });
     
     // Закрываем модальное окно при клике на крестик

@@ -117,7 +117,13 @@ def compare_view(request):
 def group_products(request):
     group = request.session.get("group", [])
     products = Product.objects.filter(id__in=group)
-
+    if request.method == "POST":
+        form = OrderProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            return JsonResponse({"success": False, "errors": form.errors})
+    form = OrderProductForm()
     if group != []:
         final_price = 0
         total_discount = 0
@@ -134,6 +140,7 @@ def group_products(request):
                 "final_price": final_price,
                 "total_price": total_price,
                 "total_discount": total_discount,
+                "form": form,
             },
         )
     else:

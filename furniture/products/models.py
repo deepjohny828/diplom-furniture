@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import localtime
 from django.utils import timezone
-
+import json
 
 class Category(models.Model):
     name = models.CharField(
@@ -63,13 +63,14 @@ class Product(models.Model):
         verbose_name="Стоимость закупки*",
         decimal_places=2,
         max_digits=10,
-        db_index=True
+        db_index=True,
+
     )
     sale_price = models.DecimalField(
         verbose_name="Стоимость продажи*",
         decimal_places=2,
         max_digits=10,
-        db_index=True
+        db_index=True,
     )
     slug = models.SlugField(unique=True, verbose_name="Метка (slug)")
     category = models.ForeignKey(
@@ -121,7 +122,7 @@ class Product(models.Model):
     is_sold = models.BooleanField("Продан", default=False)
     # date_purchased = models.DateTimeField("Дата закупки", blank=True, null=True)
     date_sold = models.DateTimeField("Дата продажи", blank=True, null=True)
-    
+
     @property
     def price_with_discount(self):
         return round((self.sale_price - (self.sale_price * self.discount) / 100), 2)
@@ -136,11 +137,13 @@ class Product(models.Model):
             Purchase.objects.create(
                 product=self, purchase_date=timezone.now(), purchase_price=self.price
             )
-        if self.is_sold:
-            self.date_sold = timezone.now()
-            self.available = False
-        if not self.is_sold:
-            self.date_sold = None
+        # if self.is_sold:
+        #     self.date_sold = timezone.now()
+        #     self.available = False
+        # if not self.is_sold:
+        #     self.date_sold = None
+        #     self.available = True
+  
 
 
         super().save(*args, **kwargs)
@@ -171,26 +174,39 @@ class Purchase(models.Model):
         verbose_name = "Закупку"
         verbose_name_plural = "Закупки"
 
+
 class OrderProduct(models.Model):
     name = models.CharField(verbose_name="Имя клиента", max_length=100)
     email = models.EmailField(verbose_name="Email")
     phone = models.CharField(verbose_name="Номер телефона", max_length=20)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
     created_at = models.DateTimeField(verbose_name="Дата заявки", auto_now_add=True)
     active = models.BooleanField(
-        verbose_name="Заявка активна", default=1, max_length=20
+        verbose_name="Заявка активна", default=1
     )
+    auto_complete = models.BooleanField(
+        verbose_name="Проставить все позиции на 'продано'?", default=0
+    )
+    products = models.ManyToManyField("Product", verbose_name="Товары",through="OrderProductItem")
+
     def save(self, *args, **kwargs):
-        if not self.active:
-            self.product.is_sold = True
-            self.product.save()
-        elif self.active:
-            self.product.is_sold = False
-            self.product.save()
-        super().save(*args, **kwargs)
+        if self.auto_complete:
+            for item in self.orderproductitem_set.all():
+                product = item.product
+                product.is_sold = True
+                product.available = False
+                product.save()
+            self.active = False  # Изменяем поле
+        super().save(*args, **kwargs)  # Сохраняем все изменения
     class Meta:
         verbose_name = "Заявка на товар"
         verbose_name_plural = "Заявки на товар"
         ordering = ["active", "created_at"]
 
         
+class OrderProductItem(models.Model):
+    order = models.ForeignKey(OrderProduct,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.order.id} - {self.product.name}" 

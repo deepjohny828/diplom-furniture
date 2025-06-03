@@ -143,25 +143,28 @@
   </style>
 </head>
 <body>
-  <header>
-    {% comment %} <button id="btn-query">Добавить новую запись</button> {% endcomment %}
-  </header>
 
   <div id="div-myChart">
     <canvas id="myChart"></canvas>
   </div>
 
   <main>
+    <form method="get" style="margin-bottom: 20px;">
+      <label>Дата от:</label>
+      <input type="date" name="start_date" value="{{ request.GET.start_date }}">
+      <label>до:</label>
+      <input type="date" name="end_date" value="{{ request.GET.end_date }}">
+      <button type="submit">Фильтровать</button>
+    </form>
+
     <div class="crm-entry">
       <span>Название</span>
-      <span>Количество</span>
       <span>Стоимость</span>
       <span>Операция</span>
     </div>
-    {% for el in elements %}
+    {% for el in page_obj %}
     <div class="crm-entry">
       <span>{{ el.name }}</span>
-      <span>{{ el.count }}</span>
       <span>{{ el.price }} рублей</span>
       <span>{{ el.type_operation }}</span>
     </div>
@@ -169,14 +172,14 @@
 
     <div class="paginator">
       <span class="step-links">
-        {% if elements.has_previous %}
+        {% if page_obj.has_previous %}
           <a href="?page=1">&laquo; 1</a>
-          <a href="?page={{elements.previous_page_number}}">Предыдущая</a>
+          <a href="?page={{page_obj.previous_page_number}}">Предыдущая</a>
         {% endif %}
-        <span class="current">Страница {{elements.number}} из {{elements.paginator.num_pages}}</span>
-        {% if elements.has_next %}
-          <a href="?page={{elements.next_page_number}}">Следующая</a>
-          <a href="?page={{elements.paginator.num_pages}}">Последняя</a>
+        <span class="current">Страница {{page_obj.number}} из {{page_obj.paginator.num_pages}}</span>
+        {% if page_obj.has_next %}
+          <a href="?page={{page_obj.next_page_number}}">Следующая</a>
+          <a href="?page={{page_obj.paginator.num_pages}}">Последняя</a>
         {% endif %}
       </span>
     </div>
@@ -203,7 +206,7 @@
     {% for el in elements %}
       const price{{ forloop.counter }} = parseFloat({{ el.price|safe }});
       const count{{ forloop.counter }} = 1;
-      const total{{ forloop.counter }} = price{{ forloop.counter }} * count{{ forloop.counter }};
+      const total{{ forloop.counter }} = price{{ forloop.counter }};
       {% if el.type_operation == "Продажи" %}
         income += total{{ forloop.counter }};
       {% else %}

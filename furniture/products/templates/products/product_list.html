@@ -75,19 +75,20 @@
   <main class="products">
     {% for product in products %}
     <div class="product-card">
-      <a href="{% url 'product_detail' product.slug %}">
-        <span class="badge">Бестселлер</span>
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        <div class="price">
-          <span>{{ product.price }} руб.</span>
-          {% if product.old_price %}
-          <span class="old-price">{{ product.old_price }} руб.</span>
-          <span class="discount">-{{ product.discount_percent }}%</span>
-          {% endif %}
-        </div>
-        <p>{{ product.name }}</p>
-        <p class="in-stock">{% if product.in_stock %}В наличии{% else %}Нет в наличии{% endif %}</p>
-      </a>
+      <div class="item" data-id="{{ product.id }}"></div>
+        <a href="{% url 'product_detail' product.slug %}">
+          <span class="badge">Бестселлер</span>
+          <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          <div class="price">
+            <span>{{ product.price }} руб.</span>
+            {% if product.old_price %}
+            <span class="old-price">{{ product.old_price }} руб.</span>
+            <span class="discount">-{{ product.discount_percent }}%</span>
+            {% endif %}
+          </div>
+          <p>{{ product.name }}</p>
+          <p class="in-stock">{% if product.in_stock %}В наличии{% else %}Нет в наличии{% endif %}</p>
+        </a>
       <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
       <a href="{% url 'add_to_compare' product.id %}">Добавить к сравнению</a>
     </div>

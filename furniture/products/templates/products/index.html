@@ -28,6 +28,7 @@
     <div class="products">
     {% for product in products %}
     <div class="product-card">
+        <div class="item" data-id="{{ product.id }}"></div>
         <a href="{% url 'product_detail' product.slug %}">
             <span class="badge">Бестселлер</span>
             <img src="{{ product.image.url }}" alt="{{ product.name }}">
@@ -45,28 +46,6 @@
     </div>
     {% endfor %}
     </div>
-        {% comment %} <div class="product-card">
-            <span class="badge">NEW</span>
-            <img src={% static 'products/img/32.jpg' %} alt="Тест">
-            <div class="price">30 699 руб. <span class="old-price">81 799 руб.</span><span class="discount">-63%</span></div>
-            <div class="text-products">Модульная кухня Квадро Оливково-зеленый</div>
-            <button>Купить</button>
-        </div>
-        <div class="product-card">
-            <span class="badge red">-20% SUPER КЕШБЕК</span>
-            <img src={% static 'products/img/2.webp' %} alt="Тест">
-            <div class="price">30 299 руб. <span class="old-price">80 999 руб.</span><span class="discount">-63%</span></div>
-            <div class="text-products">Модульная кухня Мелисса Графит Скин</div>
-            <button>Купить</button>
-        </div>
-        <div class="product-card">
-            <span class="badge red">-20% SUPER КЕШБЕК</span>
-            <img src={% static 'products/img/600.webp' %} alt="Тест">
-            <div class="price">30 299 руб. <span class="old-price">80 999 руб.</span><span class="discount">-63%</span></div>
-            <div class="text-products">Модульная кухня Мелисса Графит Скин</div>
-            <button>Купить</button>
-        </div>
-    </div> {% endcomment %}
 </div>
 <div class="container">
     <div>

@@ -92,16 +92,18 @@
 <div class="cart-container">
     <div class="cart-items">
     {% for element in elements %}
-    <div class="item">
-        <img src={{element.img.url}} alt="Product">
-        <div class="item-info">
-            <p><strong>{{element.name}}</strong></p>
-            <p>Цена: {{element.sale_price}} ₽ {% if element.discount > 0 %}<span>Скидка {{element.discount}} %</span>{% endif %}</p>
-            <p>Цена со скидкой: {{element.price_with_discount}} ₽</p>
-        </div>
-        <div class="item-controls">
-            <a class="a-delete" href="{% url 'remove_from_group_products' element.id %}" class="remove">Удалить</a>
-        </div>
+    <div class="item" data-id="{{ element.id }}"></div>
+      <a href="{% url 'product_detail' element.slug %}" class="item-link">
+          <img src="{{ element.img.url }}" alt="Product">
+          <div class="item-info">
+              <p><strong>{{ element.name }}</strong></p>
+              <p>Цена: {{ element.sale_price }} ₽ {% if element.discount > 0 %}<span>Скидка {{ element.discount }} %</span>{% endif %}</p>
+              <p>Цена со скидкой: {{ element.price_with_discount }} ₽</p>
+          </div>
+      </a>
+      <div class="item-controls">
+          <a class="a-delete" href="{% url 'remove_from_group_products' element.id %}">Удалить</a>
+      </div>
     </div>
     {% endfor %}
     </div>
