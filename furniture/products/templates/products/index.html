@@ -5,42 +5,70 @@
     Главная
 {% endblock title %}
 
-{% block style %}{% endblock style %}
+{% block style %}
+<link rel="stylesheet" href={% static "products/css/catalog-style.css" %}>
+{% endblock style %}
 
 {% block content %}
 <div class="slider" id="bannerSlider">
     <div class="slides">
-        <div class="slide"><img src={% static 'products/img/ss.jpg.webp' %} alt="Тест"><div class="slide-content">
-            {% comment %} <h2>Скидка 10%</h2><p>На кухонный стол</p><a href="#">Подробнее</a> {% endcomment %}
-        </div></div>
-        <div class="slide"><img src={% static 'products/img/j.jpg.webp' %} alt="Тест"><div class="slide-content">
-            {% comment %} <h2>Товар дня</h2><p>Суперцены только сегодня</p><a href="#">Купить</a> {% endcomment %}
-            </div></div>
-        <div class="slide"><img src={% static 'products/img/t.jpg.webp' %} alt="Тест"><div class="slide-content">
-            {% comment %} <h2>Гарантия и сервис</h2><p>Лучшие условия</p><a href="#">Подробнее</a> {% endcomment %}
-        </div></div>
+        {% for slider_image in slider_images %}
+        <div class="slide">
+            <img src="{{ slider_image.image.url }}" alt="{{ slider_image.alt_text }}">
+            <div class="slide-content">
+                {% if slider_image.link %}
+                <a href="{{ slider_image.link }}">Подробнее</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
-    <div class="slider-buttons"><button id="prev">&#10094;</button><button id="next">&#10095;</button></div>
+    <div class="slider-buttons">
+        <button id="prev">&#10094;</button>
+        <button id="next">&#10095;</button>
+    </div>
     <div class="dots" id="dotsContainer"></div>
 </div>
 <div>
     <h2 class="title-hits">Новинка</h2>
     <div class="products">
-    {% for product in products %}
+    {% for product in new_products %}
     <div class="product-card">
         <div class="item" data-id="{{ product.id }}"></div>
         <a href="{% url 'product_detail' product.slug %}">
-            <span class="badge">Бестселлер</span>
+            {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
             <img src="{{ product.image.url }}" alt="{{ product.name }}">
             <div class="price">
-            <span>{{ product.price }} руб.</span>
-            {% if product.price %}
-            <span class="old-price">{{ product.price}} руб.</span>
+            <span>{{ product.price_with_discount}} руб.</span>
+            {% if product.discount > 0%}
+            <span class="old-price">{{ product.sale_price}} руб.</span>
             <span class="discount">-{{ product.discount }}%</span>
             {% endif %}
             </div>
             <p>{{ product.name }}</p>
-            <p class="in-stock">{% if product.available %}В наличии{% else %}Нет в наличии{% endif %}</p>
+        </a>
+        <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+<div>
+    <h2 class="title-hits">Распродажа</h2>
+    <div class="products">
+    {% for product in discounted_new_products %}
+    <div class="product-card">
+        <div class="item" data-id="{{ product.id }}"></div>
+        <a href="{% url 'product_detail' product.slug %}">
+            {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="price">
+            <span>{{ product.price_with_discount}} руб.</span>
+            {% if product.discount > 0%}
+            <span class="old-price">{{ product.sale_price}} руб.</span>
+            <span class="discount">-{{ product.discount }}%</span>
+            {% endif %}
+            </div>
+            <p>{{ product.name }}</p>
         </a>
         <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
     </div>
@@ -48,8 +76,8 @@
     </div>
 </div>
 <div class="container">
-    <div>
-        <h3 style="text-align: center; border:3px solid #e24a3a; border-radius: 10px; padding:15px"><a href={% url "product_list" %}>Посмотреть все предложения...</a></h3>
+    <div style="display: flex; justify-content: center;">
+        <a  href={% url "product_list" %}><button style="text-align: center; border:3px solid #e24a3a; border-radius: 10px; padding:30px; align-self:center;border:none; margin:20px; background-color: #e24a3a;">Посмотреть все предложения...</button></a>
     </div>
     <div class="about-company">
         <img src={% static 'products/img/test.jpg' %} alt="Тест">

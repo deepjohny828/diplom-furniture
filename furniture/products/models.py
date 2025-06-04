@@ -48,6 +48,20 @@ class Material(models.Model):
         verbose_name = "Материал"
         verbose_name_plural = "Метериалы"
 
+class SliderImage(models.Model):
+    image = models.ImageField(upload_to='slider/', verbose_name="Изображение для слайдера")
+    alt_text = models.CharField(max_length=255, verbose_name="Текст для alt", blank=True)
+    link = models.URLField(blank=True, null=True, verbose_name="Ссылка для слайда")
+    order = models.PositiveIntegerField(default=0, verbose_name="Порядок отображения", help_text="Меньшие значения отображаются раньше")
+
+    class Meta:
+        ordering = ['order']
+        verbose_name = 'Изображение слайдера'
+        verbose_name_plural = 'Изображения слайдера'
+
+    def __str__(self):
+        return f"Слайд {self.id}"
+
 
 def generate_article_number(pk):
     return f"PRD-{str(pk).zfill(5)}"
@@ -66,6 +80,7 @@ class Product(models.Model):
         db_index=True,
 
     )
+    created_at = models.DateTimeField(verbose_name="Дата создания", auto_now_add=True)
     sale_price = models.DecimalField(
         verbose_name="Стоимость продажи*",
         decimal_places=2,
@@ -86,6 +101,7 @@ class Product(models.Model):
         verbose_name="Размер скидки",
         default=0,
         validators=[MinValueValidator(0), MaxValueValidator(99)],
+        blank=True
     )
     article_number = models.CharField(
         verbose_name="Артикул",
@@ -115,7 +131,7 @@ class Product(models.Model):
         verbose_name="Материал",
         on_delete=models.SET_NULL,
         null=True,
-        blank=True,
+        blank=True
     )
     # in_stock = models.PositiveIntegerField("Остаток на складе", default=0)
     available = models.BooleanField("Активен в каталоге", default=True)
@@ -137,6 +153,7 @@ class Product(models.Model):
             Purchase.objects.create(
                 product=self, purchase_date=timezone.now(), purchase_price=self.price
             )
+
         # if self.is_sold:
         #     self.date_sold = timezone.now()
         #     self.available = False
@@ -197,6 +214,7 @@ class OrderProduct(models.Model):
                 product.available = False
                 product.save()
             self.active = False  # Изменяем поле
+            self.auto_complete = False
         super().save(*args, **kwargs)  # Сохраняем все изменения
     class Meta:
         verbose_name = "Заявка на товар"

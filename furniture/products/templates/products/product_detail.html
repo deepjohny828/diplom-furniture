@@ -2,62 +2,416 @@
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'products/css/product-detail.css' %}">
+<style>
+    :root {
+        --primary-color: #3498db;
+        --danger-color: #e74c3c;
+        --success-color: #2ecc71;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        --text-color: #333;
+        --light-gray: #f5f7fa;
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        line-height: 1.6;
+    }
+    
+    .product-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 20px;
+    }
+    
+    /* Галерея */
+    .gallery {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 15px;
+        background: white;
+        padding: 20px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+    }
+    
+    .thumbnails {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    .thumbnails::-webkit-scrollbar {
+        height: 5px;
+    }
+    
+    .thumbnails::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 10px;
+    }
+    
+    .thumb {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 2px solid transparent;
+    }
+    
+    .thumb:hover {
+        transform: scale(1.05);
+        border-color: var(--primary-color);
+    }
+    
+    .main-image {
+        width: 100%;
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f9f9f9;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+    }
+    
+    .main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: var(--transition);
+    }
+    
+    /* Информация о товаре */
+    .product-info {
+        background: white;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+    }
+    
+    .product-info h1 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+        color: #2c3e50;
+    }
+    
+    .product-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .product-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+    
+    .product-meta-item svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .price-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: var(--border-radius);
+    }
+    
+    .price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--danger-color);
+    }
+    
+    .old-price {
+        font-size: 1.2rem;
+        text-decoration: line-through;
+        color: #999;
+    }
+    
+    .discount-badge {
+        background-color: #ffebee;
+        color: var(--danger-color);
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+    
+    .availability {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-left: 10px;
+    }
+    
+    .available {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .sold {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+    
+    .product-details {
+        margin: 30px 0;
+    }
+    
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    
+    .detail-item {
+        padding: 10px 0;
+        border-bottom: 1px dashed #eee;
+    }
+    
+    .detail-item strong {
+        color: #555;
+        display: block;
+        margin-bottom: 5px;
+    }
+    
+    .description {
+        margin: 30px 0;
+        padding: 20px;
+        background: #f9f9f9;
+        border-radius: var(--border-radius);
+    }
+    
+    .buttons {
+        margin: 30px 0;
+    }
+    
+    #openModalBtn {
+        width: 100%;
+        padding: 15px;
+        background-color: var(--success-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    #openModalBtn:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+    }
+    
+    .category-info {
+        font-size: 0.9rem;
+        color: #666;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    
+    .category-info a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+    
+    .category-info a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .product-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .gallery {
+            flex-direction: column;
+        }
+        
+        .thumbnails {
+            order: 2;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-info h1 {
+            font-size: 1.5rem;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="product-container">
-  <!-- Галерея -->
-  <div class="gallery">
-    <div class="thumbnails">
-      {% for img in product.gallery.all %}
-        <img src="{{ img.image.url }}" class="thumb" onclick="setMainImage(this.src)">
-      {% endfor %}
-    </div>
-    <div class="main-image">
-      <img id="mainImage" src="{{ product.image.url }}" alt="{{ product.name }}">
-    </div>
-  </div>
-
-  <!-- Информация о товаре -->
-  <div class="product-info">
-    <div class="item" data-id="{{ product.id }}"></div>
-    <h1>{{ product.name }}</h1>
-    <div class="price-box">
-      <span class="price">{{ product.price }} ₽</span>
-      {% if product.old_price %}
-      <span class="old-price">{{ product.old_price }} ₽</span>
-      <span class="discount">-{{ product.discount_percent }}%</span>
-      {% endif %}
+    <!-- Галерея -->
+    <div class="gallery">
+        <div class="thumbnails">
+            {% for img in product.gallery.all %}
+                <img src="{{ img.image.url }}" class="thumb" onclick="setMainImage(this.src)" alt="Миниатюра {{ forloop.counter }}">
+            {% endfor %}
+        </div>
+        <div class="main-image">
+            <img id="mainImage" src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
     </div>
 
-    <div class="availability">
-      <span class="stock-label">{% if product.in_stock %}В наличии{% else %}Нет в наличии{% endif %}</span>
-    </div>
+    <!-- Информация о товаре -->
+    <div class="product-info">
+        <div class="item" data-id="{{ product.id }}"></div>
+        <h1>{{ product.name }}</h1>
+        
+        <div class="product-meta">
+            <div class="product-meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                </svg>
+                Артикул: {{ product.article_number }}
+            </div>
+            {% if product.brand %}
+            <div class="product-meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
+                </svg>
+                Бренд: {{ product.brand.name }}
+            </div>
+            {% endif %}
+            <div class="product-meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+                Добавлен: {{ product.created_at|date:"d.m.Y" }}
+            </div>
+        </div>
+        
+        <div class="price-box">
+            <span class="price">{{ product.price_with_discount }} ₽</span>
+            {% if product.discount > 0 %}
+                <span class="old-price">{{ product.sale_price }} ₽</span>
+                <span class="discount-badge">-{{ product.discount }}%</span>
+            {% endif %}
+            <span class="availability {% if product.is_sold %}sold{% else %}available{% endif %}">
+                {% if product.is_sold %}Продан{% else %}В наличии{% endif %}
+            </span>
+        </div>
 
-    <div class="characteristics">
-      <h3>Характеристики:</h3>
-      <ul>
-        {% for char in product.characteristics.all %}
-        <li><strong>{{ char.name }}:</strong> {{ char.value }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="buttons">
-        <button id="openModalBtn" data-product_id={{product.id}}>Оставить заявку</button>
-    </div>
+        <div class="product-details">
+            <h3>Характеристики:</h3>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <strong>Габариты:</strong>
+                    {{ product.width }} × {{ product.height }} × {{ product.depth }} мм
+                </div>
+                {% if product.color %}
+                <div class="detail-item">
+                    <strong>Цвет:</strong>
+                    {{ product.color.name }}
+                </div>
+                {% endif %}
+                {% if product.material %}
+                <div class="detail-item">
+                    <strong>Материал:</strong>
+                    {{ product.material.name }}
+                </div>
+                {% endif %}
+                {% if product.date_sold %}
+                <div class="detail-item">
+                    <strong>Дата продажи:</strong>
+                    {{ product.date_sold|date:"d.m.Y" }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if product.description %}
+        <div class="description">
+            <h3>Описание:</h3>
+            <p>{{ product.description }}</p>
+        </div>
+        {% endif %}
+        
+        <div class="buttons">
+            <button id="openModalBtn" data-product_id="{{ product.id }}" {% if product.is_sold %}disabled{% endif %}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5z"/>
+                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                </svg>
+                {% if product.is_sold %}Товар продан{% else %}Оставить заявку{% endif %}
+            </button>
+        </div>
 
-    <div class="category-info">
-      Категория: <a href="{% url 'product_list' %}?category={{ product.category.id }}">{{ product.category.name }}</a>
+        <div class="category-info">
+            Категория: <a href="{% url 'product_list' %}?category={{ product.category.id }}">{{ product.category.name }}</a>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-  function setMainImage(src) {
-    document.getElementById('mainImage').src = src;
-  }
+    function setMainImage(src) {
+        const mainImg = document.getElementById('mainImage');
+        // Добавляем анимацию перехода
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+            mainImg.src = src;
+            mainImg.style.opacity = '1';
+        }, 200);
+        
+        // Подсвечиваем выбранную миниатюру
+        document.querySelectorAll('.thumb').forEach(thumb => {
+            thumb.style.borderColor = thumb.src === src ? 'var(--primary-color)' : 'transparent';
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Добавляем интерактивность кнопке
+        const orderBtn = document.getElementById('openModalBtn');
+        if (orderBtn) {
+            orderBtn.addEventListener('click', function() {
+                // Здесь можно добавить обработчик для модального окна
+                console.log('Order product:', this.dataset.product_id);
+            });
+        }
+    });
 </script>
 {% endblock %}

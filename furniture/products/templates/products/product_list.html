@@ -34,6 +34,14 @@
         </div>
       </div>
       <div>
+        <div>
+          <h3>Скидка</h3>
+          <label>
+            <input type="checkbox" name="discount" value="1" {% if request.GET.discount == '1' %}checked{% endif %}>
+            Только со скидкой
+          </label>
+      </div>
+      <div>
         <h3>Категории</h3>
         <select name="category">
           <option value="">Все категории</option>
@@ -44,6 +52,7 @@
           {% endfor %}
         </select>
       </div>
+      
       <!-- Дополнительные фильтры -->
       <div>
         <h3>Тип</h3>
@@ -80,14 +89,13 @@
           <span class="badge">Бестселлер</span>
           <img src="{{ product.image.url }}" alt="{{ product.name }}">
           <div class="price">
-            <span>{{ product.price }} руб.</span>
-            {% if product.old_price %}
-            <span class="old-price">{{ product.old_price }} руб.</span>
-            <span class="discount">-{{ product.discount_percent }}%</span>
+            <span>{{ product.price_with_discount }} руб.</span>
+            {% if product.discount > 0 %}
+            <span class="old-price">{{ product.sale_price }} руб.</span>
+            <span class="discount">-{{ product.discount }}%</span>
             {% endif %}
           </div>
           <p>{{ product.name }}</p>
-          <p class="in-stock">{% if product.in_stock %}В наличии{% else %}Нет в наличии{% endif %}</p>
         </a>
       <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
       <a href="{% url 'add_to_compare' product.id %}">Добавить к сравнению</a>

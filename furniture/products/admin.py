@@ -7,6 +7,7 @@ from products.models import (
     Color,
     Purchase,
     OrderProductItem,
+    SliderImage
 )
 from django.utils.timezone import localtime
 
@@ -17,6 +18,12 @@ from django.utils.html import format_html, format_html_join
 import json
 from django.utils.safestring import mark_safe
 
+@admin.register(SliderImage)
+class SliderImage(admin.ModelAdmin):
+    list_display = ['id', 'image', 'order', 'link', 'alt_text']
+    search_fields = ['alt_text', 'link']
+    list_filter = ['order']
+    ordering = ['order']
 
 @admin.register(LogEntry)
 class LogEntryAdmin(admin.ModelAdmin):
@@ -239,13 +246,13 @@ class ProductAdmin(admin.ModelAdmin):
         (
             "Служебные данные",
             {
-                "fields": ("updated_at",),
+                "fields": ("updated_at","created_at"),
                 "classes": ("collapse",),
             },
         ),
     )
 
-    readonly_fields = ("updated_at",)
+    readonly_fields = ("updated_at",'created_at')
     list_filter = ("available", "is_sold", "category", "brand", "color", "material")
     search_fields = ("name", "article_number", "slug")
 
