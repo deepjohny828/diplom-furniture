@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.getElementById('prev');
     const nextBtn = document.getElementById('next');
     const dotsContainer = document.getElementById('dotsContainer');
+    const slidesWrapper = document.getElementById('slidesWrapper');
     let currentSlide = 0;
     
     // Инициализация слайдера
@@ -29,10 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Обновление слайдера
+    
+
     function updateSlider() {
-        slides.forEach((slide, i) => {
-            slide.style.transform = `translateX(${100 * (i - currentSlide)}%)`;
-        });
+        const offset = -100 * currentSlide;
+        slidesWrapper.style.transform = `translateX(${offset}%)`;
         updateDots();
     }
     

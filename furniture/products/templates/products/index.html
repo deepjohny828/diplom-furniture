@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="slider" id="bannerSlider">
-    <div class="slides">
+    <div class="slides" id="slidesWrapper">
         {% for slider_image in slider_images %}
         <div class="slide">
             <img src="{{ slider_image.image.url }}" alt="{{ slider_image.alt_text }}">
