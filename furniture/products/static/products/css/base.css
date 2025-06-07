@@ -409,6 +409,7 @@ a:hover{
     background: white;
     padding: 40px;
     border-radius: 10px;
+    padding:10px 0;
 }
 
 .about-company {
@@ -417,7 +418,8 @@ a:hover{
 }
 
 .about-company img {
-    width: 400px;
+    width: 50vw;
+    align-self: center;
 }
 
 .about-text h2 {
@@ -429,8 +431,11 @@ a:hover{
 }
 
 .subscribe {
-    text-align: center;
-    margin: 40px 0;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
 
 .subscribe input {
@@ -477,6 +482,9 @@ a:hover{
 }
 
 @media (max-width: 768px) {
+    body,.container{
+        padding:0;
+    }
     .about-company {
         flex-direction: column;
         text-align: center;
@@ -485,5 +493,12 @@ a:hover{
     .footer-columns {
         flex-direction: column;
         text-align: center;
+    }
+    .container{
+        max-width: 100%;
+        
+    }
+    .products{
+        padding:0;
     }
 }

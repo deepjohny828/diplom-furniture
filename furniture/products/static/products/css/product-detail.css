@@ -1,9 +1,10 @@
 .product-container {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 40px auto;
-    gap: 40px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 20px;
   }
   
   .gallery {
@@ -109,7 +110,7 @@
   @media (max-width: 768px) {
     .product-container {
       flex-direction: column;
-      padding: 20px;
+      padding: 0;
     }
   
     .gallery, .product-info {
