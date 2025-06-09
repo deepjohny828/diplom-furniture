@@ -380,10 +380,12 @@ a:hover{
 .about-company {
     display: flex;
     gap: 30px;
+    justify-content: center;
+    margin: 50px 0px;
 }
 
 .about-company img {
-    width: 22vw;
+    width: 31%;
     align-self: center;
 }
 
@@ -447,7 +449,7 @@ a:hover{
 }
 
 header,.container,.footer,.footer-columns,.mega-menu{
-    max-width: 1714px;
+    max-width: 1280px;
     margin: auto;
 }
 .cont{

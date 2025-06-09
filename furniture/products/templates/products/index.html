@@ -89,6 +89,29 @@
     {% endfor %}
     </div>
 </div>
+<div>
+    <h2 class="title-hits">Распродажа</h2>
+    <div class="products">
+    {% for product in discounted_new_products %}
+    <div class="product-card">
+        <div class="item" data-id="{{ product.id }}"></div>
+        <a href="{% url 'product_detail' product.slug %}">
+            {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="price">
+            <span>{{ product.price_with_discount}} руб.</span>
+            {% if product.discount > 0%}
+            <span class="old-price">{{ product.sale_price}} руб.</span>
+            <span class="discount">-{{ product.discount }}%</span>
+            {% endif %}
+            </div>
+            <p>{{ product.name }}</p>
+        </a>
+        <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+    </div>
+    {% endfor %}
+    </div>
+</div>
 <div class="container">
     <div style="display: flex; justify-content: center;">
         <a  href={% url "product_list" %}><button style="text-align: center; border:3px solid #e24a3a; border-radius: 10px; padding:30px; align-self:center;border:none; margin:20px; background-color: #e24a3a;">Посмотреть все предложения...</button></a>
