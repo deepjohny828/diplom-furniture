@@ -9,18 +9,18 @@
 {% block content %}
 <div class="cart-container">
     <div class="cart-items">
-        <h2>Ваши товары</h2>
+        <h2>Ваша корзина</h2>
         <div class="items-list">
             {% for element in elements %}
             <div class="item-card" data-id="{{ element.id }}">
                 <a href="{% url 'product_detail' element.slug %}" class="item-link">
-                    <img src="{{ element.img.url }}" alt="{{ element.name }}" class="item-image">
+                    <img src="{{ element.image.url }}" alt="{{ element.name }}" class="item-image">
                     <div class="item-content">
                         <h3 class="item-title">{{ element.name }}</h3>
                         <div class="item-price">
                             {% if element.discount > 0 %}
-                            <span class="original-price">{{ element.sale_price }} ₽</span>
                             <span class="discounted-price">{{ element.price_with_discount }} ₽</span>
+                            <span class="original-price">{{ element.sale_price }} ₽</span>
                             <span class="discount-badge">-{{ element.discount }}%</span>
                             {% else %}
                             <span class="discounted-price">{{ element.sale_price }} ₽</span>

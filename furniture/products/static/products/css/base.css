@@ -1,15 +1,44 @@
+:root {
+  /* Цветовая палитра */
+  --color-bg-main: #FFFFFF;
+  --color-bg-secondary: #FAF6F0;
+  --color-text-primary: #2C3E50;
+  --color-text-secondary: #5D6D7E;
+  --color-accent-green: #7A9E7E;
+  --color-accent-pink: #E8C4C4;
+  --color-border: rgba(0, 0, 0, 0.05);
+  
+  /* Радиусы */
+  --radius-card: 12px;
+  --radius-button: 4px;
+  
+  /* Тени */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 4px 15px rgba(0, 0, 0, 0.1);
+  
+  /* Отступы */
+  --padding-section: 20px;
+  --padding-card: 15px;
+  
+  /* Доп переменные для замены --danger-color и --success-color */
+  --danger-color: #E8C4C4; /* Используем акцентный розовый */
+  --success-color: #7A9E7E; /* Используем акцентный зеленый */
+}
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
 }
-a{
-    text-decoration: none;
-    color:inherit;
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
-a:hover{
-    color:black;
+
+a:hover {
+  color: var(--color-text-primary);
 }
 
 /* -------------------- HEADER -------------------- */
@@ -18,13 +47,13 @@ a:hover{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: #fff;
+    padding: 10px var(--padding-section);
+    background-color: var(--color-bg-main);
     font-size: 14px;
 }
 
 .header-top {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--color-border);
 }
 
 .header-top .location {
@@ -33,23 +62,23 @@ a:hover{
 }
 
 .header-top .location i {
-    color: #f44336;
+    color: var(--color-accent-green);
     margin-right: 5px;
 }
 
 .header-top .menu {
     display: flex;
     gap: 20px;
-    color: #666;
+    color: var(--color-text-secondary);
 }
 
 .header-top .menu div:hover {
-    color: #000;
+    color: var(--color-text-primary);
     cursor: pointer;
 }
 
 .header-top .phone span {
-    color: #f44336;
+    color: var(--color-accent-green);
     margin-right: 10px;
 }
 
@@ -59,7 +88,7 @@ a:hover{
 }
 
 .logo img {
-    height: 75px;
+    height: 90px;
     margin-right: 10px;
 }
 
@@ -74,24 +103,25 @@ a:hover{
 }
 
 .catalog-btn {
-    background: #ff5a47;
-    color: #fff;
+    background: var(--color-accent-green);
+    color: var(--color-bg-main);
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: var(--radius-button);
 }
 
-.catalog-btn:hover{
-    background-color: #ff5a47;
+.catalog-btn:hover {
+    background-color: var(--color-accent-green);
+    opacity: 0.9;
 }
 
 .mega-menu {
     display: flex;
-    border-top: 1px solid #eee;
-    background: #fff;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-main);
+    box-shadow: var(--shadow-hover);
     position: absolute;
     top: 135px;
     left: 0;
@@ -107,26 +137,26 @@ a:hover{
 
 .mega-left {
     width: 250px;
-    border-right: 1px solid #eee;
-    background: #fafafa;
+    border-right: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
 }
 
 .category {
-    padding: 15px 20px;
+    padding: var(--padding-card) var(--padding-section);
     cursor: pointer;
     border-left: 3px solid transparent;
 }
 
 .category:hover,
 .category.selected {
-    background: #ffecec;
-    border-left: 3px solid #ff5a47;
+    background: var(--color-accent-pink);
+    border-left: 3px solid var(--color-accent-green);
     font-weight: bold;
 }
 
 .mega-right {
     flex: 1;
-    padding: 20px;
+    padding: var(--padding-section);
     display: flex;
     flex-wrap: wrap;
     gap: 40px;
@@ -143,7 +173,7 @@ a:hover{
 
 .submenu h4 {
     margin-top: 0;
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 .submenu ul {
@@ -154,31 +184,31 @@ a:hover{
 .submenu li {
     margin: 5px 0;
     cursor: pointer;
-    color: #333;
+    color: var(--color-text-secondary);
 }
 
 .submenu li:hover {
-    color: #ff5a47;
+    color: var(--color-accent-green);
 }
 
 .search-bar {
     flex: 1;
     display: flex;
-    margin: 0 20px;
+    margin: 0 var(--padding-section);
 }
 
 .search-bar input {
     flex: 1;
     padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button) 0 0 var(--radius-button);
 }
 
 .search-bar button {
-    background-color: #ff5a47;
-    color: white;
+    background-color: var(--color-accent-green);
+    color: var(--color-bg-main);
     padding: 12px 20px;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 var(--radius-button) var(--radius-button) 0;
 }
 
 .header-icons {
@@ -188,12 +218,12 @@ a:hover{
 
 .header-icons div {
     text-align: center;
-    color: #666;
+    color: var(--color-text-secondary);
     cursor: pointer;
 }
 
 .header-icons div:hover {
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 @media (max-width: 768px) {
@@ -209,7 +239,7 @@ a:hover{
     width: 90%;
     max-width: 1200px;
     margin: 40px auto;
-    border-radius: 10px;
+    border-radius: var(--radius-card);
     overflow: hidden;
     position: relative;
 }
@@ -234,7 +264,7 @@ a:hover{
     position: absolute;
     top: 30%;
     left: 50px;
-    color: #000;
+    color: var(--color-text-primary);
 }
 
 .slide-content h2 {
@@ -246,11 +276,11 @@ a:hover{
 }
 
 .slide-content a {
-    background-color: #ff5a47;
-    color: white;
+    background-color: var(--color-accent-green);
+    color: var(--color-bg-main);
     padding: 10px 20px;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: var(--radius-button);
 }
 
 .slider-buttons {
@@ -263,10 +293,10 @@ a:hover{
 
 .slider-buttons button {
     background-color: rgba(0,0,0,0.4);
-    color: white;
+    color: var(--color-bg-main);
     padding: 10px 20px;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: var(--radius-button);
 }
 
 .dots {
@@ -278,14 +308,14 @@ a:hover{
     display: inline-block;
     width: 12px;
     height: 12px;
-    background-color: #bbb;
+    background-color: var(--color-text-secondary);
     border-radius: 50%;
     margin: 0 5px;
     cursor: pointer;
 }
 
 .dot.active {
-    background-color: #ff5a47;
+    background-color: var(--color-accent-green);
 }
 
 @media (max-width: 768px) {
@@ -295,45 +325,45 @@ a:hover{
 }
 
 /* -------------------- PRODUCTS -------------------- */
-.title-hits{
+.title-hits {
     text-align: center;
 }
-.text-products{
+.text-products {
     margin: 15px 0;
 }
 .products {
     width: 90%;
     margin: 40px auto;
-    padding: 20px;
+    padding: var(--padding-section);
     display: grid;
-    grid-template-columns: repeat(4, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
 
 .product-card {
-    background-color: white;
-    border-radius: 10px;
+    background-color: var(--color-bg-main);
+    border-radius: var(--radius-card);
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    box-shadow: var(--shadow-card);
+    padding: var(--padding-card);
     position: relative;
 }
 
 .product-card img {
     width: 100%;
     height: 200px;
-    border-radius: 10px;
+    border-radius: var(--radius-card);
 }
 
 .product-card .badge {
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: #ffeb3b;
+    background-color: #ffeb3b; /* Оставлен как яркий акцент */
     padding: 5px 10px;
-    color: #000;
+    color: var(--color-text-primary);
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: var(--radius-button);
 }
 
 .product-card .price {
@@ -344,7 +374,7 @@ a:hover{
 
 .product-card .old-price {
     font-size: 14px;
-    color: #999;
+    color: var(--color-text-secondary);
     text-decoration: line-through;
 }
 
@@ -354,18 +384,18 @@ a:hover{
 }
 
 .product-card button {
-    background-color: #ff5a47;
-    color: white;
+    background-color: var(--color-accent-green);
+    color: var(--color-bg-main);
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--radius-button);
     width: 100%;
     cursor: pointer;
     margin-top: auto;
 }
 
 .product-card button:hover {
-    background-color: #e24a3a;
+    opacity: 0.9;
 }
 
 /* -------------------- ABOUT + FOOTER -------------------- */
@@ -373,8 +403,8 @@ a:hover{
 .container {
     width: 100%;
     margin: 50px auto;
-    background: white;
-    border-radius: 10px;
+    background: var(--color-bg-main);
+    border-radius: var(--radius-card);
 }
 
 .about-company {
@@ -394,7 +424,7 @@ a:hover{
 }
 
 .about-text p {
-    color: #555;
+    color: var(--color-text-secondary);
 }
 
 .subscribe {
@@ -412,12 +442,12 @@ a:hover{
 
 .subscribe button {
     padding: 12px 25px;
-    background-color: #ff5a47;
-    color: white;
+    background-color: var(--color-accent-green);
+    color: var(--color-bg-main);
 }
 
 .footer {
-    background: #fff;
+    background: var(--color-bg-main);
     padding: 50px 20px;
     border-radius: 40px 40px 0 0;
 }
@@ -439,8 +469,8 @@ a:hover{
 .footer-bottom {
     text-align: center;
     margin-top: 20px;
-    color: #999;
-    border-top: 1px solid #99999930;
+    color: var(--color-text-secondary);
+    border-top: 1px solid var(--color-border);
 }
 
 .payment-icons img {
@@ -448,41 +478,79 @@ a:hover{
     margin: 0 5px;
 }
 
-header,.container,.footer,.footer-columns,.mega-menu{
+header, .container, .footer, .footer-columns, .mega-menu {
     max-width: 1280px;
     margin: auto;
 }
-.cont{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
+.cont {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
-.footer,header{
-    width:100%;
+.footer, header {
+    width: 100%;
 }
-.container{
-    flex-grow:1;
+.container {
+    flex-grow: 1;
 }
-.cont,html,body{
-    height:100%
+.cont, html, body {
+    height: 100%
 }
-.card-buttons{
-    display:flex;
+.card-buttons {
+    display: flex;
     gap: 5%;
     margin: 10px 0;
 }
-.div-card-buttons{
-    display:flex;
+.div-card-buttons {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap:10px;
+    gap: 10px;
     margin: 5px;
     text-align: center;
 }
+
+.remove-btn {
+    padding: 10px 20px;
+    background-color: var(--color-accent-pink);
+    color: var(--color-text-primary);
+    border: none;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remove-btn:hover {
+    background-color: #d8b0b0;
+    transform: translateY(-2px);
+}
+
+
+.discounted-price {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.discount-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.mini-header{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
 @media (max-width: 768px) {
-    body,.container{
-        padding:0;
+    body, .container {
+        padding: 0;
     }
     .about-company {
         flex-direction: column;
@@ -493,17 +561,19 @@ header,.container,.footer,.footer-columns,.mega-menu{
         flex-direction: column;
         text-align: center;
     }
-    .container{
+    .container {
         max-width: 100%;
-        
     }
-    .products{
-        padding:0;
+    .products {
+        padding: 0;
+        grid-template-columns: repeat(auto-fill, 250px);
+        justify-content: center;
+
     }
-    .subscribe input{
+    .subscribe input {
         width: 100%;
     }
-    form.subscribe > h2{
-        text-align:center;
+    form.subscribe > h2 {
+        text-align: center;
     }
 }

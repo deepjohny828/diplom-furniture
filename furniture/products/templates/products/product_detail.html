@@ -38,7 +38,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                     <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v8A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-8A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5zm1.886 6.914L15 7.151V12.5a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5V7.15l6.614 1.764a1.5 1.5 0 0 0 .772 0zM1.5 4h13a.5.5 0 0 1 .5.5v1.616L8.129 7.948a.5.5 0 0 1-.258 0L1 6.116V4.5a.5.5 0 0 1 .5-.5z"/>
                 </svg>
-                Бренд: {{ product.brand.name }}
+                Бренд: <a href="{% url 'product_list'%}?brand={{ product.brand.id }}"> {{ product.brand.name }}</a>
             </div>
             {% endif %}
             <div class="product-meta-item">
@@ -55,9 +55,6 @@
                 <span class="old-price">{{ product.sale_price }} ₽</span>
                 <span class="discount-badge">-{{ product.discount }}%</span>
             {% endif %}
-            <span class="availability {% if product.is_sold %}sold{% else %}available{% endif %}">
-                {% if product.is_sold %}Продан{% else %}В наличии{% endif %}
-            </span>
         </div>
 
         <div class="product-details">
@@ -110,10 +107,6 @@
         </div>
         <div class="buttons">
             <button id="openModalBtn" data-product_id="{{ product.id }}" {% if product.is_sold %}disabled{% endif %}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5z"/>
-                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
-                </svg>
                 {% if product.is_sold %}Товар продан{% else %}Оставить заявку{% endif %}
             </button>
         </div>

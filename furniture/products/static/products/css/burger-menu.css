@@ -1,47 +1,85 @@
-     .burger {
-         display: none;
-         font-size: 24px;
-         cursor: pointer;
-     }
+.burger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    padding: 10px;
+    transition: all 0.3s ease;
+}
 
-     .mobile-menu {
-         display: none;
-         flex-direction: column;
-         background-color: #fff;
-         position: absolute;
-         top: 60px;
-         right: 20px;
-         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-         z-index: 1000;
-     }
+.burger:hover {
+    color: var(--color-accent-green);
+}
 
-     .mobile-menu a {
-         padding: 10px 20px;
-         border-bottom: 1px solid #eee;
-         color: #333;
-     }
+.mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: var(--color-bg-main);
+    position: absolute;
+    top: 60px;
+    right: var(--padding-section);
+    box-shadow: var(--shadow-hover);
+    border-radius: var(--radius-card);
+    z-index: 1000;
+    min-width: 200px;
+    border: 1px solid var(--color-border);
+}
 
-     .mobile-menu a:hover {
-         background-color: #ffecec;
-     }
+.mobile-menu a {
+    padding: 12px var(--padding-card);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-     @media (max-width: 768px) {
+.mobile-menu a:last-child {
+    border-bottom: none;
+}
 
-         .header-main>.menu,
-         .catalog-wrapper,
-         
-         .header-icons {
-             display: none;
-         }
+.mobile-menu a:hover {
+    background-color: var(--color-accent-pink);
+    color: var(--color-text-primary);
+}
 
-         .burger {
-             display: block;
-         }
-         .header-top .menu {
-            padding: 25px 0;
-         }
-         .search-bar{
-            margin: 0;
-            width:100%;
-         }
-     }
+
+
+@media (max-width: 768px) {
+    .header-main > .menu,
+    .catalog-wrapper,
+    .header-icons {
+        display: none;
+    }
+
+    .burger {
+        display: block;
+        order:1;
+        margin-left: 20px;
+    }
+    
+    .header-top .menu {
+        padding: var(--padding-section) 0;
+    }
+    
+    .search-bar {
+        margin: 0;
+        width: 100%;
+    }
+    
+    /* Анимация открытия меню */
+    .mobile-menu.active {
+        display: flex;
+        animation: fadeIn 0.3s ease;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

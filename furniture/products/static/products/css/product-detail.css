@@ -1,20 +1,10 @@
-:root {
-    --primary-color: #3498db;
-    --danger-color: #e74c3c;
-    --success-color: #2ecc71;
-    --border-radius: 12px;
-    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease;
-    --text-color: #333;
-    --light-gray: #f5f7fa;
-}
-
 .product-container {
     display: flex;
     justify-content: space-around;
     max-width: 1200px;
-    margin: 30px auto;
-    padding: 20px;
+    margin: var(--padding-section) auto;
+    padding: var(--padding-card);
+    gap: 30px;
 }
 
 /* Галерея */
@@ -22,12 +12,12 @@
     display: flex;
     flex-direction: column-reverse;
     gap: 15px;
-    background: white;
-    padding: 20px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    max-width: 40%;
-    align-self: center;
+    background: var(--color-bg-main);
+    padding: var(--padding-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    max-width: 45%;
+    align-self: flex-start;
 }
 
 .thumbnails {
@@ -43,7 +33,7 @@
 }
 
 .thumbnails::-webkit-scrollbar-thumb {
-    background: #ddd;
+    background: var(--color-border);
     border-radius: 10px;
 }
 
@@ -51,15 +41,15 @@
     width: 70px;
     height: 70px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: var(--radius-button);
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s ease;
     border: 2px solid transparent;
 }
 
 .thumb:hover {
     transform: scale(1.05);
-    border-color: var(--primary-color);
+    border-color: var(--color-accent-green);
 }
 
 .main-image {
@@ -68,8 +58,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f9f9f9;
-    border-radius: var(--border-radius);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-card);
     overflow: hidden;
 }
 
@@ -77,35 +67,31 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transition: var(--transition);
-    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
 /* Информация о товаре */
 .product-info {
-    background: white;
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    background: var(--color-bg-main);
+    padding: var(--padding-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
     width: 50%;
-    margin: 15px 0px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 .product-info h1 {
-    margin-top: 0;
-    margin-bottom: 15px;
+    margin: 0;
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: var(--color-text-primary);
 }
 
 .product-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 20px;
 }
 
 .product-meta-item {
@@ -113,46 +99,31 @@
     align-items: center;
     gap: 5px;
     font-size: 0.9rem;
-    color: #666;
-}
-
-.product-meta-item svg {
-    width: 16px;
-    height: 16px;
+    color: var(--color-text-secondary);
 }
 
 .price-box {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 25px;
     flex-wrap: wrap;
-    padding: 15px;
-    background: #f9f9f9;
-    border-radius: var(--border-radius);
-    font-size: 1.6rem;
+    padding: var(--padding-card);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-card);
 }
 
 .price {
     font-size: 1.8rem;
     font-weight: bold;
-    color: var(--danger-color);
 }
 
 .old-price {
     font-size: 1.2rem;
     text-decoration: line-through;
-    color: #999;
+    color: var(--color-text-secondary);
 }
 
-.discount-badge {
-    background-color: #ffebee;
-    color: var(--danger-color);
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
-}
+
 
 .availability {
     display: inline-block;
@@ -160,21 +131,15 @@
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: bold;
-    margin-left: 10px;
 }
 
 .available {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-}
-
-.sold {
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: rgba(122, 158, 126, 0.1);
+    color: var(--color-accent-green);
 }
 
 .product-details {
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .details-grid {
@@ -185,63 +150,63 @@
 
 .detail-item {
     padding: 10px 0;
-    border-bottom: 1px dashed #eee;
+    border-bottom: 1px dashed var(--color-border);
 }
 
 .detail-item strong {
-    color: #555;
+    color: var(--color-text-primary);
     display: block;
     margin-bottom: 5px;
 }
 
 .description {
-    margin: 30px 0;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: var(--border-radius);
+    margin: 20px 0;
+    padding: var(--padding-card);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-card);
 }
 
 .buttons {
-    margin: 30px 0;
+    margin: 20px 0;
     display: flex;
     gap: 20px;
 }
 
-#openModalBtn {
+.buy-btn {
     width: 100%;
     padding: 15px;
-    background-color: var(--success-color);
+    background-color: var(--color-accent-green);
     color: white;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--radius-button);
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
 }
 
-#openModalBtn:hover {
-    background-color: #27ae60;
+.buy-btn:hover {
+    background-color: #6a8d6e;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+    box-shadow: var(--shadow-hover);
 }
 
 .category-info {
     margin-top: 20px;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--color-text-secondary);
     padding-top: 20px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--color-border);
 }
 
 .category-info a {
-    color: var(--primary-color);
+    color: var(--color-accent-green);
     text-decoration: none;
-    transition: var(--transition);
+    transition: all 0.3s ease;
 }
 
 .category-info a:hover {
@@ -255,20 +220,15 @@
         padding: 0;
     }
     
-    .product-info {
-        width: 77%;
-        margin: auto;
+    .product-info,
+    .gallery {
+        width: 90%;
+        margin: 0 auto 20px;
     }
     
     .gallery {
-        flex-direction: column;
-        margin: 20px 0;
         max-width: 100%;
-    }
-    
-    .thumbnails {
-        order: 2;
-        justify-content: center;
+        flex-direction: column;
     }
     
     .buttons {
@@ -278,8 +238,8 @@
 
 @media (max-width: 480px) {
     .product-info {
-        padding: 20px;
-        width: 85%;
+        padding: 15px;
+        width: 95%;
     }
     
     .product-info h1 {

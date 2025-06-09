@@ -103,22 +103,20 @@
 .icons i:hover {
     color: #333;
 }
-  
-.burger {
-    display: none;
-    background-color: #ff5a47;
-    color: white;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin: 10px 0px;
-}
 
-h2 {
+.h2-cat {
     margin: 15px;
 }
-  
+.button-all-offers{
+    padding: 1% 20%;
+}
+.a-all-offers{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
 @media (max-width: 768px) {
     .catalog-grid {
         grid-template-columns: 1fr;
@@ -141,10 +139,6 @@ h2 {
     .sidebar.active {
         transform: translateX(300px);
     }
-  
-    .burger {
-        display: block;
-    }
     
     .product-card {
         margin: auto;
@@ -155,5 +149,10 @@ h2 {
     .slide img {
         height: 50vw;
         object-fit: unset;
+    }
+    .a-all-offers{
+        width: 80%;
+        display: flex;
+        margin:auto;
     }
 }
