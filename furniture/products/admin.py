@@ -222,12 +222,7 @@ class ColorAdmin(admin.ModelAdmin):
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
-    # def has_change_permission(self, request, obj=None):
-    #     if obj and obj.is_sold:
-    #         return False
-    #     return super().has_change_permission(request, obj)
-    
+class ProductAdmin(admin.ModelAdmin): 
     list_display = (
         "name",
         "sale_price_formatted",
@@ -238,6 +233,9 @@ class ProductAdmin(admin.ModelAdmin):
         "updated_at",
     )
     fieldsets = (
+        ("Аналитика",
+            {"fields":("views","purchases_count","compare_count")}
+         ),
         (
             "Основная информация",
             {"fields": ("name", "slug", "article_number", "category", "brand")},
@@ -247,7 +245,7 @@ class ProductAdmin(admin.ModelAdmin):
             "Характеристики",
             {"fields": (("width", "height", "depth"), "color", "material")},
         ),
-        ("Внешний вид", {"fields": ("image", "description")}),
+        ("Внешний вид", {"fields": ("image", "description","is_seasonal","is_bestseller","is_new")}),
         ("Статус продажи", {"fields": ("available", "is_sold", "date_sold")}),
         (
             "Служебные данные",
@@ -256,9 +254,10 @@ class ProductAdmin(admin.ModelAdmin):
                 "classes": ("collapse",),
             },
         ),
+
     )
 
-    readonly_fields = ("updated_at",'created_at')
+    readonly_fields = ("updated_at",'created_at',"views","purchases_count","compare_count")
     list_filter = ("available", "is_sold", "category", "brand", "color", "material")
     search_fields = ("name", "article_number", "slug")
 

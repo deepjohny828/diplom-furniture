@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.forms import ValidationError
 from django.utils.timezone import localtime
 from django.utils import timezone
 
@@ -142,11 +143,50 @@ class Product(models.Model):
         null=True,
         blank=True
     )
-    # in_stock = models.PositiveIntegerField("Остаток на складе", default=0)
     available = models.BooleanField("Активен в каталоге", default=True)
     is_sold = models.BooleanField("Продан", default=False)
-    # date_purchased = models.DateTimeField("Дата закупки", blank=True, null=True)
     date_sold = models.DateTimeField("Дата продажи", blank=True, null=True)
+
+
+    is_seasonal = models.BooleanField(
+        verbose_name="Сезонный товар",
+        default=False,
+        help_text="Отобразит бейджик 'Сезонный товар' у товара"
+    )
+    is_bestseller = models.BooleanField(
+        verbose_name="Хит продаж",
+        default=False,
+        help_text="Отобразит бейджик 'Хит продаж' у товара"
+    )
+    is_new = models.BooleanField(
+        verbose_name="Новинка",
+        default=True,
+        help_text="Отобразит бейджик 'Новинка' у товара"
+    )
+
+    def clean(self):
+        super().clean()
+        selected_fields = [self.is_seasonal, self.is_bestseller, self.is_new]
+        if sum(selected_fields) > 1:
+            raise ValidationError("Можно выбрать только один статус (Сезонный, Хит продаж или Новинка)!")
+
+    views = models.PositiveIntegerField(
+        verbose_name="Просмотры",
+        default=0,
+        editable=False,
+        db_index=True,
+    )
+    purchases_count = models.PositiveIntegerField(
+        verbose_name="Количество покупок",
+        default=0,
+        editable=False
+    )
+    compare_count = models.PositiveIntegerField(
+        verbose_name="Количество сравнений",
+        default=0,
+        editable=False
+    )
+
 
     @property
     def price_with_discount(self):
@@ -162,14 +202,19 @@ class Product(models.Model):
             Purchase.objects.create(
                 product=self, purchase_date=timezone.now(), purchase_price=self.price
             )
-
-
+        if self.sale_price < self.price:
+            raise ValueError("Цена продажи не может быть ниже закупочной цены")
         super().save(*args, **kwargs)
         
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
         ordering = ["is_sold"]
+        indexes = [
+            models.Index(fields=["name", "category"]),
+            models.Index(fields=["price", "sale_price"]),
+            models.Index(fields=["available", "is_sold"]),
+        ]
 
     def __str__(self):
         return self.name
