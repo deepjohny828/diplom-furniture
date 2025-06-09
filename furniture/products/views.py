@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404, HttpResponse
-from products.models import Product, Category
+from products.models import Product, Category,Feedback
 from products.func import str_to_decimal
 from django.core.exceptions import ValidationError
 from products.forms import OrderProductForm
 from django.http import JsonResponse
 from django.shortcuts import redirect
-from .models import SliderImage
+from .models import Brand, Color, Material, SliderImage
 from django.db.models import Q
 
 def index(request):
@@ -75,7 +75,9 @@ def product_list(request):
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
     discount = request.GET.get("discount")
-
+    brands = Brand.objects.filter(product__isnull=False).distinct()
+    colors = Color.objects.filter(product__isnull=False).distinct()
+    materials = Material.objects.filter(product__isnull=False).distinct()
     products = Product.objects.filter(available=True)
     selected_category = None
 
@@ -109,6 +111,9 @@ def product_list(request):
             "t": category_id,
             "form": form,
             "sel_cat": selected_category,
+            "brands":brands,
+            "colors":colors,
+            "materials":materials,
         },
     )
 
@@ -146,8 +151,9 @@ def remove_from_compare(request, product_id):
 
 def compare_view(request):
     compare = request.session.get("compare", [])
+    have_compare = compare != []
     products = Product.objects.filter(id__in=compare)
-    return render(request, "products/compare_view.html", {"products": products})
+    return render(request, "products/compare_view.html", {"products": products,"have_compare":have_compare})
 
 
 def group_products(request):
@@ -180,12 +186,20 @@ def group_products(request):
             },
         )
     else:
-        return redirect("/")
+        return redirect("not_group_products")
+
+def not_group_products(request):
+    group = request.session.get("group", [])
+    if group == []:
+        return render(request,"products/not_group_products.html")
+    else:
+        redirect("group_products")
 
 
 def add_to_group_products(request, product_id):
     group = request.session.get("group", [])
-    if product_id not in group:
+    product_is_available = Product.objects.filter(id=product_id,available=True)
+    if product_is_available and product_id not in group:
         group.append(product_id)
     request.session["group"] = group
     return redirect("group_products")
@@ -201,3 +215,15 @@ def remove_from_group_products(request, product_id):
         return redirect("group_products")
     else:
         return redirect("/")
+
+def feedback(request):
+    if request.method == "POST":
+        req = request.POST['sss']
+        obj = Feedback(email=req)
+        obj.save()
+    return redirect("index")
+
+
+# Пока не реализовано
+def page_not_found(request,exception):
+    return render(request, 'products/404.html',status=404)

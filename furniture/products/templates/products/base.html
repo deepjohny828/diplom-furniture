@@ -13,119 +13,121 @@
     {% block style %}{% endblock style %}
 </head>
 <body>
-    <header>
-      <div class="header-top">
-          <div class="location"><i class="fa-solid fa-location-dot"></i> Вологда</div>
-          <div class="menu"><a href="{% url 'product_list' %}?discount=1">Товары со скидкой</a></div>
-          <div class="phone"><a>Заказать звонок</a> 8 (800) 500-62-05</div>
-      </div>
-      <div class="header-main">
-          <div class="logo">
-            <a href={% url "index" %}><img src={% static 'products/img/logo.png' %} alt="Логотип"></a>
-          </div>
-          <div class="burger" id="burger"><i class="fas fa-bars"></i></div>
-          <div class="mobile-menu" id="mobileMenu">
-            <a href={% url "product_list" %}>Каталог</a>
-            <a href="{% url 'product_list' %}?discount=1">Акции</a>
-            <a href={% url "contacts" %}>Контакты</a>
-            <a href={% url "compare_view" %}>Сравнение</a>
-            <a href={% url "group_products" %}>Корзина</a>
-          </div>
-          <div class="catalog-wrapper">
-            <button id="catalogBtn" class="catalog-btn">Каталог</button>
-          </div>
-          <div id="megaMenu" class="mega-menu hidden">
-            <div class="mega-left">
-              <div class="category" data-target="chairs"><i></i> Столы и стулья</div>
-              <div class="category" data-target="sofas"><i></i> Мягкая мебель</div>
+    <div class="cont">
+      <header>
+        <div class="header-top">
+            <div class="location"><i class="fa-solid fa-location-dot"></i> Вологда</div>
+            <div class="menu"><a href="{% url 'product_list' %}?discount=1">Товары со скидкой</a></div>
+            <div class="phone"><a>Заказать звонок</a> 8 (800) 500-62-05</div>
+        </div>
+        <div class="header-main">
+            <div class="logo">
+              <a href={% url "index" %}><img src={% static 'products/img/logo.png' %} alt="Логотип"></a>
             </div>
-            <div class="mega-right">
-              <div class="submenu" id="chairs">
-                <h4>Столы</h4>
-                <ul>
-                  <li>Обеденные</li>
-                  <li>Компьютерные</li>
-                </ul>
-                <h4>Стулья</h4>
-                <ul>
-                  <li>Деревянные</li>
-                  <li>Пластиковые</li>
-                </ul>
+            <div class="burger" id="burger"><i class="fas fa-bars"></i></div>
+            <div class="mobile-menu" id="mobileMenu">
+              <a href={% url "product_list" %}>Каталог</a>
+              <a href="{% url 'product_list' %}?discount=1">Акции</a>
+              <a href={% url "contacts" %}>Контакты</a>
+              <a href={% url "compare_view" %}>Сравнение</a>
+              <a href={% url "group_products" %}>Корзина</a>
+            </div>
+            <div class="catalog-wrapper">
+              <button id="catalogBtn" class="catalog-btn">Каталог</button>
+            </div>
+            <div id="megaMenu" class="mega-menu hidden">
+              <div class="mega-left">
+                <div class="category" data-target="chairs"><i></i> Столы и стулья</div>
+                <div class="category" data-target="sofas"><i></i> Мягкая мебель</div>
               </div>
-              <div class="submenu" id="sofas">
-                <h4>Мягкая мебель</h4>
-                <ul>
-                  <li>Угловые диваны</li>
-                  <li>Прямые диваны</li>
-                  <li>Кресла</li>
-                </ul>
+              <div class="mega-right">
+                <div class="submenu" id="chairs">
+                  <h4>Столы</h4>
+                  <ul>
+                    <li>Обеденные</li>
+                    <li>Компьютерные</li>
+                  </ul>
+                  <h4>Стулья</h4>
+                  <ul>
+                    <li>Деревянные</li>
+                    <li>Пластиковые</li>
+                  </ul>
+                </div>
+                <div class="submenu" id="sofas">
+                  <h4>Мягкая мебель</h4>
+                  <ul>
+                    <li>Угловые диваны</li>
+                    <li>Прямые диваны</li>
+                    <li>Кресла</li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-          <form style="width: 80%;" method="get" action="{% url 'product_search' %}" class="search-container">
-            <div class="search-bar">
-              <input type="text" 
-                    name="q" 
-                    id="product-search" 
-                    placeholder="Я хочу купить..." 
-                    autocomplete="off"
-                    value="{{ request.GET.q }}">
-              <button type="submit" id="search-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                </svg>
-              </button>
+            <form style="width: 80%;" method="get" action="{% url 'product_search' %}" class="search-container">
+              <div class="search-bar">
+                <input type="text" 
+                      name="q" 
+                      id="product-search" 
+                      placeholder="Я хочу купить..." 
+                      autocomplete="off"
+                      value="{{ request.GET.q }}">
+                <button type="submit" id="search-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>
+                </button>
+              </div>
+            </form>
+            <div class="header-icons">
+              <a href={% url "compare_view" %}><div><i class="fa fa-chart-bar"></i><br>Сравнение</div></a>
+              <a href={% url "group_products" %}><div><i class="fa fa-cart-shopping"></i><br>Корзина</div></a>
             </div>
-          </form>
-          <div class="header-icons">
-            <a href={% url "compare_view" %}><div><i class="fa fa-chart-bar"></i><br>Сравнение</div></a>
-            <a href={% url "group_products" %}><div><i class="fa fa-cart-shopping"></i><br>Корзина</div></a>
-          </div>
-      </div>
-    </header>
-    <main class="container mt-4">
-        {% block content %}{% endblock %}
-    </main>
-    <div class="footer">
-      <div class="footer-columns">
-          <div class="footer-column">
-            <h4>Компания</h4>
-            <ul>
-              <li><a href={% url "contacts" %}>Контакты</a></li>
-              {% comment %} <li><a href="#">Реквизиты</a></li> {% endcomment %}
-            </ul>
-          </div>
-          {% comment %} <div class="footer-column">
-            <h4>Оплата</h4>
-            <ul>
-              <li><a href="#">Способы оплаты</a></li>
-              <li><a href="#">Оферта</a></li>
-            </ul>
-          </div> {% endcomment %}
-          {% comment %} <div class="footer-column">
-            <h4>Сервис</h4>
-            <ul>
-              <li><a href="#">Доставка</a></li>
-              <li><a href="#">Возврат</a></li>
-            </ul>
-          </div> {% endcomment %}
-          <div class="footer-column">
-            <h4>Каталог</h4>
-            <ul>
-              <li><a href={% url "product_list" %}>Все товары</a></li>
-              <li><a href="{% url 'product_list' %}?discount=1">Акции</a></li>
-            </ul>
-          </div>
-          <div class="footer-column">
-            <h4>Контакты</h4>
-            <ul>
-              <li>8 (800) 500-62-05</li>
-              <li>г. Вологда</li>
-            </ul>
-          </div>
-      </div>
-      <div class="footer-bottom"><p>2013 - 2025 © ООО "Вертикаль"</p></div>
-  </div>
+        </div>
+      </header>
+      <main class="container mt-4">
+          {% block content %}{% endblock %}
+      </main>
+      <div class="footer">
+        <div class="footer-columns">
+            <div class="footer-column">
+              <h4>Компания</h4>
+              <ul>
+                <li><a href={% url "contacts" %}>Контакты</a></li>
+                {% comment %} <li><a href="#">Реквизиты</a></li> {% endcomment %}
+              </ul>
+            </div>
+            {% comment %} <div class="footer-column">
+              <h4>Оплата</h4>
+              <ul>
+                <li><a href="#">Способы оплаты</a></li>
+                <li><a href="#">Оферта</a></li>
+              </ul>
+            </div> {% endcomment %}
+            {% comment %} <div class="footer-column">
+              <h4>Сервис</h4>
+              <ul>
+                <li><a href="#">Доставка</a></li>
+                <li><a href="#">Возврат</a></li>
+              </ul>
+            </div> {% endcomment %}
+            <div class="footer-column">
+              <h4>Каталог</h4>
+              <ul>
+                <li><a href={% url "product_list" %}>Все товары</a></li>
+                <li><a href="{% url 'product_list' %}?discount=1">Акции</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>Контакты</h4>
+              <ul>
+                <li>8 (800) 500-62-05</li>
+                <li>г. Вологда</li>
+              </ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>2013 - 2025 © ООО "Вертикаль"</p></div>
+    </div>
+    </div>
   <div id="myModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>

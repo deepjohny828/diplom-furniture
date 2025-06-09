@@ -3,6 +3,8 @@ from products import views
 
 urlpatterns = [
     path("",views.index,name="index"),
+    path("feedback/",views.feedback,name="feedback"),
+    path("not_group_products/",views.not_group_products,name="not_group_products"),
     path("products/",views.product_list,
          name='product_list'),
     path("product_detail/<slug:slug>/",views.product_detail,name="product_detail"),

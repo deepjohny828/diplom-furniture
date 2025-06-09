@@ -22,7 +22,10 @@
         line-height: 1.6;
     }
     
-    
+    .product-container{
+        display:flex;
+        justify-content: space-around;
+    }
     
     /* Галерея */
     .gallery {
@@ -33,6 +36,8 @@
         padding: 20px;
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
+        max-width: 40%;
+        align-self: center;
     }
     
     .thumbnails {
@@ -90,6 +95,8 @@
         padding: 30px;
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
+        width: 50%;
+        margin: 15px 0px;
     }
     
     .product-info h1 {
@@ -245,12 +252,16 @@
     /* Адаптивность */
     @media (max-width: 768px) {
         .product-container {
-            grid-template-columns: 1fr;
-            gap: 20px;
+            flex-direction: column;
+        }
+        .product-info{
+            width:77%;
+            margin:auto;
         }
         
         .gallery {
             flex-direction: column;
+            margin:20px 0;
         }
         
         .thumbnails {
@@ -361,7 +372,20 @@
             <p>{{ product.description }}</p>
         </div>
         {% endif %}
-        
+        <div class="card-buttons">
+            <a href={% url "add_to_compare" product.id %}>
+                <div class="div-card-buttons">
+                    <i class="fa fa-chart-bar"></i>
+                    <br>Добавить в сравнение</br>
+                </div>
+            </a>
+            <a href={% url "add_to_group_products" product.id %}>
+                <div class="div-card-buttons">
+                    <i class="fa fa-cart-shopping"></i>
+                    <br>Добавить в корзину</br>
+                </div>
+            </a>
+        </div>
         <div class="buttons">
             <button id="openModalBtn" data-product_id="{{ product.id }}" {% if product.is_sold %}disabled{% endif %}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">

@@ -403,13 +403,10 @@ a:hover{
 /* -------------------- ABOUT + FOOTER -------------------- */
 
 .container {
-    width: 90%;
-    max-width: 75%;
+    width: 100%;
     margin: 50px auto;
     background: white;
-    padding: 40px;
     border-radius: 10px;
-    padding:10px 0;
 }
 
 .about-company {
@@ -418,7 +415,7 @@ a:hover{
 }
 
 .about-company img {
-    width: 50vw;
+    width: 22vw;
     align-self: center;
 }
 
@@ -440,7 +437,7 @@ a:hover{
 
 .subscribe input {
     padding: 12px;
-    width: 250px;
+    width: 50%;
 }
 
 .subscribe button {
@@ -481,6 +478,39 @@ a:hover{
     margin: 0 5px;
 }
 
+
+header,.container,.footer,.footer-columns,.mega-menu{
+    max-width: 1714px;
+    margin: auto;
+}
+.cont{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+.footer,header{
+    width:100%;
+}
+.container{
+    flex-grow:1;
+}
+.cont,html,body{
+    height:100%
+}
+.card-buttons{
+    display:flex;
+    gap: 5%;
+    margin: 10px 0;
+}
+.div-card-buttons{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:10px;
+    margin: 5px;
+    text-align: center;
+}
 @media (max-width: 768px) {
     body,.container{
         padding:0;
@@ -500,5 +530,11 @@ a:hover{
     }
     .products{
         padding:0;
+    }
+    .subscribe input{
+        width: 100%;
+    }
+    form.subscribe > h2{
+        text-align:center;
     }
 }

@@ -14,71 +14,117 @@
 {% endblock style %}
 
 {% block content %}
-<h3>
+<h2>
   {% if sel_cat %}
     Категория: {{ sel_cat.name }}
   {% else %}
     Вся продукция
   {% endif %}
-</h3>
+</h2>
 
 <div class="catalog-grid">
   <!-- Фильтры -->
-  <aside class="sidebar">
+<aside class="sidebar">
     <form method="get" action="{% url 'product_list' %}">
-      <div class="price-range">
-        <h3>Цена</h3>
-        <div class="price-range-inp">
-          <input type="number" name="min_price" placeholder="От 19" value="{{ request.GET.min_price }}">
-          <input type="number" name="max_price" placeholder="До 247649" value="{{ request.GET.max_price }}">
+        <!-- Фильтр по цене -->
+        <div class="price-range">
+            <h3>Цена</h3>
+            <div class="price-range-inp">
+                <input type="number" name="min_price" placeholder="От {{ min_price|default:'19' }}" 
+                       value="{{ request.GET.min_price }}">
+                <input type="number" name="max_price" placeholder="До {{ max_price|default:'247649' }}" 
+                       value="{{ request.GET.max_price }}">
+            </div>
         </div>
-      </div>
-      <div>
+
+        <!-- Фильтр по скидке -->
         <div>
-          <h3>Скидка</h3>
-          <label>
-            <input type="checkbox" name="discount" value="1" {% if request.GET.discount == '1' %}checked{% endif %}>
-            Только со скидкой
-          </label>
-      </div>
-      <div>
-        <h3>Категории</h3>
-        <select name="category">
-          <option value="">Все категории</option>
-          {% for category in categories %}
-          <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"i" %}selected{% endif %}>
-            {{ category.name }}
-          </option>
-          {% endfor %}
-        </select>
-      </div>
-      
-      <!-- Дополнительные фильтры -->
-      <div>
-        <h3>Тип</h3>
-        <label><input type="checkbox"> Соединительная</label>
-        <label><input type="checkbox"> ХДФ</label>
-      </div>
-      <div>
-        <h3>Тип поверхности</h3>
-        <label><input type="checkbox"> Глянцевая</label>
-        <label><input type="checkbox"> Матовая</label>
-      </div>
-      <div>
-        <h3>Материал фасада</h3>
-        <label><input type="checkbox"> ЛДСП</label>
-        <label><input type="checkbox"> ЛДСП/Стекло</label>
-        <label><input type="checkbox"> МДФ</label>
-        <label><input type="checkbox"> МДФ/Стекло</label>
-        <label><input type="checkbox"> Стекло</label>
-      </div>
-      <div>
-        <h3>Покрытие фасада</h3>
-        <label><input type="checkbox"> Акрилит</label>
-      </div>
-      <button type="submit">Фильтровать</button>
+            <h3>Скидка</h3>
+            <label>
+                <input type="checkbox" name="discount" value="1" 
+                       {% if request.GET.discount == '1' %}checked{% endif %}>
+                Только со скидкой
+            </label>
+        </div>
+
+        <!-- Фильтр по категориям -->
+        <div>
+            <h3>Категории</h3>
+            <select name="category">
+                <option value="">Все категории</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" 
+                        {% if request.GET.category|stringformat:"i" == category.id|stringformat:"i" %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Фильтр по брендам -->
+        <div>
+            <h3>Бренды</h3>
+            <select name="brands">
+                <option value="">Все Бренды</option>
+                {% for brand in brands %}
+                <option value="{{ brand.id }}" 
+                        {% if request.GET.brand|stringformat:"i" == brand.id|stringformat:"i" %}selected{% endif %}>
+                    {{ brand.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Фильтр по цветам -->
+        <div>
+            <h3>Цвета</h3>
+            {% for color in colors %}
+            <label>
+                <input type="checkbox" name="color" value="{{ color.id }}" {% if request.GET.color|stringformat:"i" == color.id|stringformat:"i" %}checked{% endif %}>
+                {{ color.name }}
+            </label>
+            {% endfor %}
+        </div>
+
+        <!-- Фильтр по материалам -->
+        <div>
+            <h3>Материалы</h3>
+            {% for material in materials %}
+            <label>
+                <input type="checkbox" name="material" value="{{ material.id }}"
+                       {% comment %} {% if material.id|stringformat:"i" in request.GET.getlist('material') %}checked{% endif %}> {% endcomment %}
+                {{ material.name }}
+            </label>
+            {% endfor %}
+        </div>
+
+        <!-- Фильтр по габаритам -->
+        <div>
+            <h3>Размеры</h3>
+            <div>
+                <label>Ширина (мм):
+                    <input type="number" name="min_width" placeholder="От" value="{{ request.GET.min_width }}">
+                    <input type="number" name="max_width" placeholder="До" value="{{ request.GET.max_width }}">
+                </label>
+            </div>
+            <div>
+                <label>Высота (мм):
+                    <input type="number" name="min_height" placeholder="От" value="{{ request.GET.min_height }}">
+                    <input type="number" name="max_height" placeholder="До" value="{{ request.GET.max_height }}">
+                </label>
+            </div>
+            <div>
+                <label>Глубина (мм):
+                    <input type="number" name="min_depth" placeholder="От" value="{{ request.GET.min_depth }}">
+                    <input type="number" name="max_depth" placeholder="До" value="{{ request.GET.max_depth }}">
+                </label>
+            </div>
+        </div>
+
+        <button type="submit">Фильтровать</button>
+        <a href="{% url 'product_list' %}" class="btn btn-secondary">Сбросить фильтры</a>
     </form>
-  </aside>
+</aside>
 
   <!-- Карточки товаров -->
   <main class="products">
@@ -97,8 +143,21 @@
           </div>
           <p>{{ product.name }}</p>
         </a>
+        <div class="card-buttons">
+            <a href={% url "add_to_compare" product.id %}>
+                <div class="div-card-buttons">
+                    <i class="fa fa-chart-bar"></i>
+                    <br>Добавить в сравнение</br>
+                </div>
+            </a>
+            <a href={% url "add_to_group_products" product.id %}>
+                <div class="div-card-buttons">
+                    <i class="fa fa-cart-shopping"></i>
+                    <br>Добавить в корзину</br>
+                </div>
+            </a>
+        </div>
       <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
-      <a href="{% url 'add_to_compare' product.id %}">Добавить к сравнению</a>
     </div>
     {% endfor %}
   </main>

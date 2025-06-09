@@ -9,7 +9,7 @@ btn.forEach(e => {
     e.onclick = () =>{
         const productIds = [];
         if (window.location.pathname === "/group_products/"){
-                document.querySelectorAll('.item').forEach(item => {
+                document.querySelectorAll('.item-card').forEach(item => {
                 const productId = item.dataset.id;
                 productIds.push(productId);
             });

@@ -7,16 +7,19 @@ from products.models import (
     Color,
     Purchase,
     OrderProductItem,
-    SliderImage
+    SliderImage,
+    Feedback,
+    Brand
+
 )
 from django.utils.timezone import localtime
 
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.contrib.admin import DateFieldListFilter
 from django.urls import reverse
-from django.utils.html import format_html, format_html_join
+from django.utils.html import format_html
 import json
-from django.utils.safestring import mark_safe
+
 
 @admin.register(SliderImage)
 class SliderImage(admin.ModelAdmin):
@@ -176,12 +179,15 @@ class OrderProductAdmin(admin.ModelAdmin):
 
     def main_text(self, obj):
         local_created = localtime(obj.created_at)
-        return f"Заявка на {obj.name} от {local_created.strftime('%d-%m-%Y %H:%M:%S')}"
+        products_count = obj.products.count()
+        return f"Заявка на {products_count} {' товара' if products_count > 1 else ' товар'} от {obj.name} : {local_created.strftime('%d-%m-%Y %H:%M:%S')}"
 
     main_text.short_description = "Заявка"
 
     def has_add_permission(self, request):
         return False
+    
+    
 
 
 @admin.register(Purchase)
@@ -284,3 +290,22 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj.product_set.count()
 
     product_count.short_description = "Кол-во товаров"
+
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ("email_formatted",)
+    def email_formatted(self,obj):
+        return f"Почта пользователя для получения скидок: {obj.email}"
+    email_formatted.short_description = "Почты пользователей"
+    def has_change_permission(self, request, obj=None):
+        if obj:
+            return False
+        return super().has_change_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return False
+    
+@admin.register(Brand)
+class BrandAdmin(admin.ModelAdmin):
+    list_display = ("name",)

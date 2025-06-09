@@ -10,6 +10,10 @@
         color: #2c3e50;
         font-size: 2.5em;
     }
+    h2{
+      text-align: center;
+      color: #2c3e50;
+    }
     .table-wrapper {
         overflow-x: auto;
     }
@@ -58,76 +62,58 @@
 
 {% block content %}
 <h1>Сравнение продукции</h1>
+{% if not have_compare %}
+<h2>Пока здесь пусто...</h2>
+{% endif %}
+
+
 <div class="table-wrapper">
   <div class="comparison-table">
-
-    {% for product in products %}
-      <div class="header"><p>{{ product.name }}</p></div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Изображение</p>
-        <img src="{{ product.image.url }}" class="image" alt="{{ product.name }}">
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Цена</p>
-        <span>{{ product.price }} ₽</span>
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Вес</p>
-        <span>{{ product.weight }} кг</span>
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Материал</p>
-        <span>{{ product.material }}</span>
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Цвет</p>
-        <span>{{ product.color }}</span>
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Категория</p>
-        <span>{{ product.category.name }}</span>
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Артикул</p>
-        <span>{{ product.article_number }}</span>
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Добавлен</p>
-        <span>{{ product.created_at|date:"d.m.Y" }}</span>
-      </div>
-    {% endfor %}
-
-    {% for product in products %}
-      <div>
-        <p class="label">Обновлён</p>
-        <span>{{ product.updated_at|date:"d.m.Y" }}</span>
-      </div>
-    {% endfor %}
-
+      {% for product in products %}
+            <div>
+              <a href={% url "remove_from_compare" product.id %}><button>Удалить</button></a>
+              <a href={% url "product_detail" product.slug %}>
+                <div class="header"><p>{{ product.name }}</p></div>
+                <div>
+                  <p class="label">Изображение</p>
+                  <img src="{{ product.image.url }}" class="image" alt="{{ product.name }}">
+                </div>
+                <div>
+                  <p class="label">Цена</p>
+                  <span>{{ product.price }} ₽</span>
+                </div>
+                <div>
+                  <p class="label">Вес</p>
+                  <span>{{ product.weight }} кг</span>
+                </div>
+                <div>
+                  <p class="label">Материал</p>
+                  <span>{{ product.material }}</span>
+                </div>
+                <div>
+                  <p class="label">Цвет</p>
+                  <span>{{ product.color }}</span>
+                </div>
+                <div>
+                  <p class="label">Категория</p>
+                  <span>{{ product.category.name }}</span>
+                </div>
+                <div>
+                  <p class="label">Артикул</p>
+                  <span>{{ product.article_number }}</span>
+                </div>
+                <div>
+                  <p class="label">Добавлен</p>
+                  <span>{{ product.created_at|date:"d.m.Y" }}</span>
+                </div>
+                <div>
+                  <p class="label">Обновлён</p>
+                  <span>{{ product.updated_at|date:"d.m.Y" }}</span>
+                </div>
+              </a>
+            </div>
+      {% endfor %}
+    
   </div>
 </div>
 {% endblock content %}

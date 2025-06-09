@@ -2,7 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import localtime
 from django.utils import timezone
-import json
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -17,6 +17,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class Feedback(models.Model):
+    email = models.EmailField(verbose_name="Email")
+    
+    def __str__(self):
+        return self.email
+    class Meta:
+        verbose_name = "Почта пользователя"
+        verbose_name_plural = "Почты пользователей"
 
 class Brand(models.Model):
     name = models.CharField(verbose_name="Название бренда*", max_length=100, unique=True)
@@ -46,7 +54,8 @@ class Material(models.Model):
     
     class Meta:
         verbose_name = "Материал"
-        verbose_name_plural = "Метериалы"
+        verbose_name_plural = "Материалы"
+
 
 class SliderImage(models.Model):
     image = models.ImageField(upload_to='slider/', verbose_name="Изображение для слайдера")
@@ -154,14 +163,6 @@ class Product(models.Model):
                 product=self, purchase_date=timezone.now(), purchase_price=self.price
             )
 
-        # if self.is_sold:
-        #     self.date_sold = timezone.now()
-        #     self.available = False
-        # if not self.is_sold:
-        #     self.date_sold = None
-        #     self.available = True
-  
-
 
         super().save(*args, **kwargs)
         
@@ -216,6 +217,9 @@ class OrderProduct(models.Model):
             self.active = False  # Изменяем поле
             self.auto_complete = False
         super().save(*args, **kwargs)  # Сохраняем все изменения
+
+    def __str__(self):
+        return f"От: {self.name}"
     class Meta:
         verbose_name = "Заявка на товар"
         verbose_name_plural = "Заявки на товар"
@@ -228,3 +232,5 @@ class OrderProductItem(models.Model):
 
     def __str__(self):
         return f"{self.order.id} - {self.product.name}" 
+    
+

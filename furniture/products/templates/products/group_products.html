@@ -25,7 +25,7 @@
         flex-wrap: wrap;
         gap: 30px;
         max-width: 1400px;
-        margin: 0 auto;
+        margin: 15px auto;
     }
     
     .cart-items {
@@ -191,7 +191,8 @@
         }
         
         .cart-items, .cart-summary {
-            width: 100%;
+            width: 90%;
+            min-width:0px;
         }
         
         .items-list {
@@ -258,10 +259,4 @@
 {% endblock content %}
 
 {% block scripts %}
-<script>
-    // Здесь можно добавить JavaScript при необходимости
-    document.addEventListener('DOMContentLoaded', function() {
-        // Анимации или дополнительные взаимодействия
-    });
-</script>
 {% endblock scripts %}
