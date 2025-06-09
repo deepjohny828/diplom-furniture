@@ -11,95 +11,8 @@ a{
 a:hover{
     color:black;
 }
+
 /* -------------------- HEADER -------------------- */
-
-.catalog-btn {
-  background: #ff5a47;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 4px;
-}
-
-.mega-menu {
-  display: flex;
-  border-top: 1px solid #eee;
-  background: #fff;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  position: absolute;
-  top: 135px;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  max-width: 98%;
-  margin: 0 auto;
-}
-
-.mega-menu.hidden {
-  display: none;
-}
-
-.mega-left {
-  width: 250px;
-  border-right: 1px solid #eee;
-  background: #fafafa;
-}
-
-.category {
-  padding: 15px 20px;
-  cursor: pointer;
-  border-left: 3px solid transparent;
-}
-
-.category:hover,
-.category.selected {
-  background: #ffecec;
-  border-left: 3px solid #ff5a47;
-  font-weight: bold;
-}
-
-.mega-right {
-  flex: 1;
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-}
-
-.submenu {
-  display: none;
-  width: 200px;
-}
-
-.submenu.active {
-  display: block;
-}
-
-.submenu h4 {
-  margin-top: 0;
-  color: #000;
-}
-
-.submenu ul {
-  list-style: none;
-  padding: 0;
-}
-
-.submenu li {
-  margin: 5px 0;
-  cursor: pointer;
-  color: #333;
-}
-
-.submenu li:hover {
-  color: #ff5a47;
-}
-
-
-
-
 
 .header-top, .header-main {
     display: flex;
@@ -154,44 +67,99 @@ a:hover{
     font-size: 22px;
     font-weight: bold;
 }
+
 .catalog-wrapper {
     position: relative;
     display: inline-block;
 }
+
 .catalog-btn {
-    background-color: #ff5a47;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 5px;
+    background: #ff5a47;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
     cursor: pointer;
-    position: relative;
+    font-weight: bold;
+    border-radius: 4px;
 }
 
-.catalog-btn:hover + .catalog-menu,
-.catalog-menu:hover {
-    display: block;
-}
 .catalog-btn:hover{
     background-color: #ff5a47;
 }
-.catalog-menu {
-    display: none;
+
+.mega-menu {
+    display: flex;
+    border-top: 1px solid #eee;
+    background: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     position: absolute;
-    top: 100%;
+    top: 135px;
     left: 0;
-    background: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    z-index: 100;
+    right: 0;
+    z-index: 999;
+    max-width: 98%;
+    margin: 0 auto;
 }
 
-.catalog-menu a {
+.mega-menu.hidden {
+    display: none;
+}
+
+.mega-left {
+    width: 250px;
+    border-right: 1px solid #eee;
+    background: #fafafa;
+}
+
+.category {
+    padding: 15px 20px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+}
+
+.category:hover,
+.category.selected {
+    background: #ffecec;
+    border-left: 3px solid #ff5a47;
+    font-weight: bold;
+}
+
+.mega-right {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.submenu {
+    display: none;
+    width: 200px;
+}
+
+.submenu.active {
     display: block;
-    padding: 10px;
-    text-decoration: none;
+}
+
+.submenu h4 {
+    margin-top: 0;
+    color: #000;
+}
+
+.submenu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.submenu li {
+    margin: 5px 0;
+    cursor: pointer;
     color: #333;
 }
 
+.submenu li:hover {
+    color: #ff5a47;
+}
 
 .search-bar {
     flex: 1;
@@ -477,7 +445,6 @@ a:hover{
     height: 30px;
     margin: 0 5px;
 }
-
 
 header,.container,.footer,.footer-columns,.mega-menu{
     max-width: 1714px;
