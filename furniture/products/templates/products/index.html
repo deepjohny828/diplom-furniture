@@ -32,88 +32,94 @@
 <div>
     <h2 class="title-hits">Новинка</h2>
     <div class="products">
-    {% for product in new_products %}
-    <div class="product-card">
-        <div class="item" data-id="{{ product.id }}"></div>
-        <a href="{% url 'product_detail' product.slug %}">
-            {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            <div class="price">
-            <span>{{ product.price_with_discount}} руб.</span>
-            {% if product.discount > 0%}
-            <span class="old-price">{{ product.sale_price}} руб.</span>
-            <span class="discount">-{{ product.discount }}%</span>
-            {% endif %}
+        <div class="products-inner">
+            {% for product in new_products %}
+            <div class="product-card">
+                <div class="item" data-id="{{ product.id }}"></div>
+                <a href="{% url 'product_detail' product.slug %}">
+                    {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <div class="price">
+                    <span>{{ product.price_with_discount}} руб.</span>
+                    {% if product.discount > 0%}
+                    <span class="old-price">{{ product.sale_price}} руб.</span>
+                    <span class="discount">-{{ product.discount }}%</span>
+                    {% endif %}
+                    </div>
+                    <p>{{ product.name }}</p>
+                </a>
+                <div class="card-buttons">
+                    <a href={% url "add_to_compare" product.id %}>
+                        <div class="div-card-buttons">
+                            <i class="fa fa-chart-bar"></i>
+                            <br>Добавить в сравнение</br>
+                        </div>
+                    </a>
+                    <a href={% url "add_to_group_products" product.id %}>
+                        <div class="div-card-buttons">
+                            <i class="fa fa-cart-shopping"></i>
+                            <br>Добавить в корзину</br>
+                        </div>
+                    </a>
+                </div>
+                <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
             </div>
-            <p>{{ product.name }}</p>
-        </a>
-        <div class="card-buttons">
-            <a href={% url "add_to_compare" product.id %}>
-                <div class="div-card-buttons">
-                    <i class="fa fa-chart-bar"></i>
-                    <br>Добавить в сравнение</br>
-                </div>
-            </a>
-            <a href={% url "add_to_group_products" product.id %}>
-                <div class="div-card-buttons">
-                    <i class="fa fa-cart-shopping"></i>
-                    <br>Добавить в корзину</br>
-                </div>
-            </a>
+            {% endfor %}
         </div>
-        <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
-    </div>
-    {% endfor %}
     </div>
 </div>
 <div>
     <h2 class="title-hits">Распродажа</h2>
     <div class="products">
-    {% for product in discounted_new_products %}
-    <div class="product-card">
-        <div class="item" data-id="{{ product.id }}"></div>
-        <a href="{% url 'product_detail' product.slug %}">
-            {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            <div class="price">
-            <span>{{ product.price_with_discount}} руб.</span>
-            {% if product.discount > 0%}
-            <span class="old-price">{{ product.sale_price}} руб.</span>
-            <span class="discount">-{{ product.discount }}%</span>
-            {% endif %}
+        <div class="products-inner">
+            {% for product in discounted_new_products %}
+            <div class="product-card">
+                <div class="item" data-id="{{ product.id }}"></div>
+                <a href="{% url 'product_detail' product.slug %}">
+                    {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <div class="price">
+                    <span>{{ product.price_with_discount}} руб.</span>
+                    {% if product.discount > 0%}
+                    <span class="old-price">{{ product.sale_price}} руб.</span>
+                    <span class="discount">-{{ product.discount }}%</span>
+                    {% endif %}
+                    </div>
+                    <p>{{ product.name }}</p>
+                </a>
+                <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
             </div>
-            <p>{{ product.name }}</p>
-        </a>
-        <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
-    </div>
-    {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 <div>
     <h2 class="title-hits">Распродажа</h2>
     <div class="products">
-    {% for product in discounted_new_products %}
-    <div class="product-card">
-        <div class="item" data-id="{{ product.id }}"></div>
-        <a href="{% url 'product_detail' product.slug %}">
-            {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-            <div class="price">
-            <span>{{ product.price_with_discount}} руб.</span>
-            {% if product.discount > 0%}
-            <span class="old-price">{{ product.sale_price}} руб.</span>
-            <span class="discount">-{{ product.discount }}%</span>
-            {% endif %}
-            </div>
-            <p>{{ product.name }}</p>
-        </a>
-        <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+    <div class="products-inner">
+        {% for product in discounted_new_products %}
+        <div class="product-card">
+            <div class="item" data-id="{{ product.id }}"></div>
+            <a href="{% url 'product_detail' product.slug %}">
+                {% comment %} <span class="badge">Бестселлер</span> {% endcomment %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <div class="price">
+                <span>{{ product.price_with_discount}} руб.</span>
+                {% if product.discount > 0%}
+                <span class="old-price">{{ product.sale_price}} руб.</span>
+                <span class="discount">-{{ product.discount }}%</span>
+                {% endif %}
+                </div>
+                <p>{{ product.name }}</p>
+            </a>
+            <button id="openModalBtn" class="buy-btn" data-product_id="{{ product.id }}">Оставить заявку</button>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
     </div>
 </div>
 <div class="container">
-    <div>
+    <div style="margin: 50px 0px;">
         <a class="a-all-offers"  href={% url "product_list" %}><button class="button-all-offers">Посмотреть все предложения...</button></a>
     </div>
     <div class="about-company">

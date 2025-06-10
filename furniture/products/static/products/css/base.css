@@ -331,14 +331,14 @@ a:hover {
 .text-products {
     margin: 15px 0;
 }
-.products {
+/* .products {
     width: 90%;
     margin: 40px auto;
     padding: var(--padding-section);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
-}
+} */
 
 .product-card {
     background-color: var(--color-bg-main);
