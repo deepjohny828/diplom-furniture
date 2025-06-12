@@ -8,25 +8,51 @@
 </title>
   <link rel="stylesheet" href="{% static 'crm/css/diagram.css' %}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="{% static 'crm/js/new-query-crm.js' %}" defer></script>
+
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 0;
+    :root{
+    --color-bg-main: #FFFFFF;
+    --color-bg-secondary: #FAF6F0;
+    --color-text-primary: #2C3E50;
+    --color-text-secondary: #5D6D7E;
+    --color-accent-green: #7A9E7E;
+    --color-accent-pink: #E8C4C4;
+    --color-border: rgba(0, 0, 0, 0.05);
+    
+    /* Отступы */
+    --padding-section: 20px;
+    --padding-card: 15px;
+    
+    /* Доп переменные для замены --danger-color и --success-color */
+    --danger-color: #E8C4C4; /* Используем акцентный розовый */
+    --success-color: #7A9E7E; /* Используем акцентный зеленый */
     }
 
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: var(--color-bg-main);
+        color: var(--color-text-primary);
+    }
+    li{
+        list-style: none;
+    }
+    a{
+        color:color-text-primary;
+        text-decoration: none;
+        color: var(--color-text-secondary);
+    }
     header {
-      background: #4CAF50;
       color: white;
       padding: 15px;
       text-align: center;
+      border-bottom: 1px solid var(--color-border);
     }
 
     header button {
-      background: #fff;
-      color: #4CAF50;
+      background: var(--color-bg-main);
+      color: var(--color-bg-secondary);
       border: none;
       padding: 10px 20px;
       font-weight: bold;
@@ -41,12 +67,13 @@
 
     #div-myChart {
       max-width: 600px;
-      height: 50%;
       margin: 40px auto;
       background: white;
       border-radius: 10px;
       padding: 20px;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      max-height: 600px;
+      height: 60vw;
     }
 
     #myChart {
@@ -131,7 +158,7 @@
     form button {
       width: 100%;
       padding: 10px;
-      background: #4CAF50;
+      background-color: var(--color-accent-green);
       color: white;
       border: none;
       font-size: 16px;
@@ -140,8 +167,104 @@
     }
 
     form button:hover {
-      background: #45a049;
+      background-color: var(--color-accent-green);
+      opacity: 0.9;
     }
+    .chart-controls {
+    text-align: right;
+    margin-bottom: 10px;
+    }
+
+    .chart-toggle-btn {
+    background-color: var(--color-accent-green);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    }
+
+    .chart-toggle-btn:hover {
+        background-color: var(--color-accent-green);
+        opacity: 0.9;
+    }
+
+    .arrow-icon {
+    display: inline-block;
+    margin-right: 5px;
+    transition: transform 0.3s;
+    }
+    
+
+    .product-views-table {
+    width: 100%;
+    margin: 20px 0;
+    overflow-x: auto;
+  }
+
+  .product-views-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .product-views-table th {
+    background-color: #f5f7fa;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 2px solid #e1e5eb;
+    text-align: center;
+  }
+
+  .product-views-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e1e5eb;
+    vertical-align: top;
+  }
+
+  .product-views-table tr:hover {
+    background-color: #f8f9fa;
+    
+  }
+
+  .product-name {
+    width: 50%;
+    text-align: center;
+    font-family: monospace;
+  }
+
+  .views-count {
+    width: 20%;
+    text-align: right;
+    font-family: monospace;
+    text-align: center;
+  }
+
+  .last-viewed {
+    width: 30%;
+    font-family: monospace;
+    text-align: center;
+  }
+
+  /* Адаптивность */
+  @media (max-width: 768px) {
+    .product-views-table th, 
+    .product-views-table td {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+    
+    .product-name {
+      width: 40%;
+    }
+    
+    .last-viewed {
+      width: 35%;
+    }
+  }
   </style>
 </head>
 <body>

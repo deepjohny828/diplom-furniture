@@ -19,6 +19,18 @@
         gap: 10px;
         justify-content: center;
     }
+    .paginator {
+      text-align: center;
+      margin-top: 20px;
+      grid-column: 2/3;
+    }
+
+    .paginator a {
+      margin: 0 5px;
+      text-decoration: none;
+      color: var(--color-accent-green);
+      font-weight: bold;
+    }
 </style>
 {% endblock style %}
 
@@ -66,50 +78,49 @@
             </div>
 
             <!-- Фильтр по категориям -->
+            <!-- Фильтр по категориям в виде чекбоксов -->
             <div>
                 <h3>Категории</h3>
-                <select name="category">
-                    <option value="">Все категории</option>
-                    {% for category in categories %}
-                    <option value="{{ category.id }}" 
-                            {% if request.GET.category|stringformat:"i" == category.id|stringformat:"i" %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
-                    {% endfor %}
-                </select>
+                {% for category in categories %}
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="category" value="{{ category.id }}" 
+                        {% if category.id|stringformat:"s" in selected_categories %}checked{% endif %}>
+                    {{ category.name }}
+                </label>
+                {% endfor %}
             </div>
 
-            <!-- Фильтр по брендам -->
+            <!-- Фильтр по брендам в виде чекбоксов -->
             <div>
                 <h3>Бренды</h3>
-                <select name="brands">
-                    <option value="">Все Бренды</option>
-                    {% for brand in brands %}
-                    <option value="{{ brand.id }}" 
-                            {% if request.GET.brand|stringformat:"i" == brand.id|stringformat:"i" %}selected{% endif %}>
-                        {{ brand.name }}
-                    </option>
-                    {% endfor %}
-                </select>
+                {% for brand in brands %}
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="brand" value="{{ brand.id }}" 
+                        {% if brand.id|stringformat:"s" in selected_brands %}checked{% endif %}>
+                    {{ brand.name }}
+                </label>
+                {% endfor %}
             </div>
 
-            <!-- Фильтр по цветам -->
+            <!-- Фильтр по цветам (оставляем как было) -->
             <div>
                 <h3>Цвета</h3>
                 {% for color in colors %}
-                <label>
-                    <input type="checkbox" name="color" value="{{ color.id }}" {% if request.GET.color|stringformat:"i" == color.id|stringformat:"i" %}checked{% endif %}>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="color" value="{{ color.id }}" 
+                        {% if color.id|stringformat:"s" in selected_colors %}checked{% endif %}>
                     {{ color.name }}
                 </label>
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по материалам -->
+            <!-- Фильтр по материалам (оставляем как было) -->
             <div>
                 <h3>Материалы</h3>
                 {% for material in materials %}
-                <label>
-                    <input type="checkbox" name="material" value="{{ material.id }}">
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="material" value="{{ material.id }}"
+                        {% if material.id|stringformat:"s" in selected_materials %}checked{% endif %}>
                     {{ material.name }}
                 </label>
                 {% endfor %}
@@ -172,50 +183,49 @@
             </div>
 
             <!-- Фильтр по категориям -->
+            <!-- Фильтр по категориям в виде чекбоксов -->
             <div>
                 <h3>Категории</h3>
-                <select name="category">
-                    <option value="">Все категории</option>
-                    {% for category in categories %}
-                    <option value="{{ category.id }}" 
-                            {% if request.GET.category|stringformat:"i" == category.id|stringformat:"i" %}selected{% endif %}>
-                        {{ category.name }}
-                    </option>
-                    {% endfor %}
-                </select>
+                {% for category in categories %}
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="category" value="{{ category.id }}" 
+                        {% if category.id|stringformat:"s" in selected_categories %}checked{% endif %}>
+                    {{ category.name }}
+                </label>
+                {% endfor %}
             </div>
 
-            <!-- Фильтр по брендам -->
+            <!-- Фильтр по брендам в виде чекбоксов -->
             <div>
                 <h3>Бренды</h3>
-                <select name="brands">
-                    <option value="">Все Бренды</option>
-                    {% for brand in brands %}
-                    <option value="{{ brand.id }}" 
-                            {% if request.GET.brand|stringformat:"i" == brand.id|stringformat:"i" %}selected{% endif %}>
-                        {{ brand.name }}
-                    </option>
-                    {% endfor %}
-                </select>
+                {% for brand in brands %}
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="brand" value="{{ brand.id }}" 
+                        {% if brand.id|stringformat:"s" in selected_brands %}checked{% endif %}>
+                    {{ brand.name }}
+                </label>
+                {% endfor %}
             </div>
 
-            <!-- Фильтр по цветам -->
+            <!-- Фильтр по цветам (оставляем как было) -->
             <div>
                 <h3>Цвета</h3>
                 {% for color in colors %}
-                <label>
-                    <input type="checkbox" name="color" value="{{ color.id }}" {% if request.GET.color|stringformat:"i" == color.id|stringformat:"i" %}checked{% endif %}>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="color" value="{{ color.id }}" 
+                        {% if color.id|stringformat:"s" in selected_colors %}checked{% endif %}>
                     {{ color.name }}
                 </label>
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по материалам -->
+            <!-- Фильтр по материалам (оставляем как было) -->
             <div>
                 <h3>Материалы</h3>
                 {% for material in materials %}
-                <label>
-                    <input type="checkbox" name="material" value="{{ material.id }}">
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="material" value="{{ material.id }}"
+                        {% if material.id|stringformat:"s" in selected_materials %}checked{% endif %}>
                     {{ material.name }}
                 </label>
                 {% endfor %}
@@ -265,6 +275,7 @@
             {% endif %}
           </div>
           <p>{{ product.name }}</p>
+          <p class="p-description">{{product.description}}</p>
         </a>
         <div class="card-buttons">
             <a href={% url "add_to_compare" product.id %}>
@@ -284,6 +295,19 @@
     </div>
     {% endfor %}
   </main>
+  <div class="paginator">
+      <span class="step-links">
+        {% if products.has_previous %}
+          <a href="?page=1">&laquo; 1</a>
+          <a href="?page={{products.previous_page_number}}">Предыдущая</a>
+        {% endif %}
+        <span class="current">Страница {{products.number}} из {{products.paginator.num_pages}}</span>
+        {% if products.has_next %}
+          <a href="?page={{products.next_page_number}}">Следующая</a>
+          <a href="?page={{products.paginator.num_pages}}">Последняя</a>
+        {% endif %}
+      </span>
+    </div>
 </div>
 {% endblock content %}
 

@@ -5,7 +5,13 @@
 {% endblock title %}
 
 {% block content %}
+
 <div id="div-myChart">
+    <div class="chart-controls">
+      <button id="chartToggleBtn" class="chart-toggle-btn">
+        <i class="arrow-icon">↻</i> Сменить тип диаграммы
+      </button>
+    </div>
     <canvas id="myChart"></canvas>
   </div>
 
@@ -18,18 +24,30 @@
       <button type="submit">Фильтровать</button>
     </form>
 
-    <div class="crm-entry">
-      <span>Название</span>
-      <span>Стоимость</span>
-      <span>Операция</span>
+    <div class="product-views-table">
+      <table>
+        <thead>
+          <tr>
+            <th class="product-name">Название</th>
+            <th class="views-count">Стоимость</th>
+            <th class="last-viewed">Операция</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for el in page_obj %}
+          <tr>
+            <td class="product-name">{{ el.name }}</td>
+            <td class="views-count">{{ el.price }} ₽</td>
+            <td class="last-viewed">
+              <span class="operation-badge operation-{{ el.type_operation|lower }}">
+                {{ el.type_operation }}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-    {% for el in page_obj %}
-    <div class="crm-entry">
-      <span>{{ el.name }}</span>
-      <span>{{ el.price }} рублей</span>
-      <span>{{ el.type_operation }}</span>
-    </div>
-    {% endfor %}
 
     <div class="paginator">
       <span class="step-links">
@@ -50,31 +68,42 @@
 
 {% block scripts %}
 <script>
+  const chartTypes = ['doughnut', 'bar', 'pie', 'line'];
+  let currentTypeIndex = 0;
   document.addEventListener('DOMContentLoaded', () => {
-    const ctx = document.getElementById('myChart');
-    let income = 0;
-    let expense = 0;
+  const ctx = document.getElementById('myChart');
+  const toggleBtn = document.getElementById('chartToggleBtn');
+  let currentChartType = 'doughnut'; // Начальный тип диаграммы
+  let myChart = null;
+  
+  // Рассчитываем данные
+  let income = 0;
+  let expense = 0;
 
-    {% for el in elements %}
-      const price{{ forloop.counter }} = parseFloat({{ el.price|safe }});
-      const count{{ forloop.counter }} = 1;
-      const total{{ forloop.counter }} = price{{ forloop.counter }};
-      {% if el.type_operation == "Продажи" %}
-        income += total{{ forloop.counter }};
-      {% else %}
-        expense += total{{ forloop.counter }};
-      {% endif %}
-    {% endfor %}
+  {% for el in elements %}
+    const price{{ forloop.counter }} = parseFloat({{ el.price|safe }});
+    const count{{ forloop.counter }} = 1;
+    const total{{ forloop.counter }} = price{{ forloop.counter }};
+    {% if el.type_operation == "Продажи" %}
+      income += total{{ forloop.counter }};
+    {% else %}
+      expense += total{{ forloop.counter }};
+    {% endif %}
+  {% endfor %}
 
-    new Chart(ctx, {
-      {% comment %} doughnut {% endcomment %}
-      {% comment %} bar {% endcomment %}
-      type: 'doughnut',
+
+  function createChart(type) {
+    if (myChart) {
+      myChart.destroy();
+    }
+    
+    myChart = new Chart(ctx, {
+      type: type,
       data: {
         labels: ['Закупки', 'Продажи'],
         datasets: [{
           data: [expense, income],
-          backgroundColor: ['#e53935', '#43a047'],
+          backgroundColor: ['#FF8080', '#7A9E7E'],
           hoverOffset: 4
         }]
       },
@@ -87,6 +116,23 @@
         }
       }
     });
+  }
+
+  createChart(currentChartType);
+
+
+  toggleBtn.addEventListener('click', () => {
+
+    currentChartType = currentChartType === 'doughnut' ? 'bar' : 'doughnut';
+    
+    createChart(currentChartType);
+    
+    const icon = toggleBtn.querySelector('.arrow-icon');
+    icon.style.transform = 'rotate(180deg)';
+    setTimeout(() => {
+      icon.style.transform = 'rotate(0deg)';
+    }, 300);
   });
+});
 </script>
 {% endblock scripts %}

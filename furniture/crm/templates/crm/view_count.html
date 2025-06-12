@@ -1,0 +1,170 @@
+{% extends "crm/base.html" %}
+
+{% block title %}
+  Аналитика просмотров товаров
+{% endblock title %}
+
+{% block content %}
+
+<div id="div-myChart">
+    <div class="chart-controls">
+      <button id="chartToggleBtn" class="chart-toggle-btn">
+        <i class="arrow-icon">↻</i> Сменить тип диаграммы
+      </button>
+    </div>
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <main>
+    <form method="get" class="filter-form">
+        <div>
+            <label>Минимальное количество просмотров:</label>
+            <input type="number" name="min_views" value="{{ request.GET.min_views }}" min="0" placeholder="0">
+        </div>
+        <div>
+            <label>Максимальное количество просмотров:</label>
+            <input type="number" name="max_views" value="{{ request.GET.max_views }}" min="0" placeholder="Не ограничено">
+        </div>
+        <button type="submit">Применить</button>
+    </form>
+
+    <div class="product-views-table">
+        <table>
+            <thead>
+            <tr>
+                <th class="product-name">Товар</th>
+                <th class="views-count">Просмотры</th>
+                <th class="views-count">Сравнений</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in page_obj %}
+            <tr>
+                <td class="product-name">{{ product.name }}</td>
+                <td class="views-count">{{ product.views }}</td>
+                <td class="last-viewed">{{ product.views_count}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="paginator">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; 1</a>
+          <a href="?page={{page_obj.previous_page_number}}">Предыдущая</a>
+        {% endif %}
+        <span class="current">Страница {{page_obj.number}} из {{page_obj.paginator.num_pages}}</span>
+        {% if page_obj.has_next %}
+          <a href="?page={{page_obj.next_page_number}}">Следующая</a>
+          <a href="?page={{page_obj.paginator.num_pages}}">Последняя</a>
+        {% endif %}
+      </span>
+    </div>
+  </main>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const toggleBtn = document.getElementById('chartToggleBtn');
+    let currentChartType = 'bar';
+    let myChart = null;
+    
+    // Используем все продукты для диаграммы (не только текущую страницу)
+    const products = [
+      {% for product in all_products %}
+        { 
+          name: '{{ product.name|escapejs }}', 
+          views: {{ product.views_count }},
+          lastViewed: '{{ product.last_viewed|date:"d.m.Y" }}'
+        },
+      {% endfor %}
+    ];
+
+    // Остальной код остается без изменений
+    products.sort((a, b) => b.views - a.views);
+    
+    function createChart(type) {
+      if (myChart) {
+        myChart.destroy();
+      }
+      
+      const labels = products.map(p => p.name);
+      const data = products.map(p => p.views);
+      const backgroundColors = products.map((_, i) => 
+        `hsl(${(i * 30) % 360}, 70%, 60%)`
+      );
+      
+      myChart = new Chart(ctx, {
+        type: type,
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: backgroundColors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: type === 'pie' || type === 'doughnut',
+              position: 'right'
+            },
+            title: { 
+              display: true, 
+              text: 'Топ просматриваемых товаров',
+              font: { size: 16 }
+            },
+            tooltip: {
+              callbacks: {
+                afterLabel: function(context) {
+                  const product = products.find(p => p.name === context.label);
+                  return `Последний просмотр: ${product.lastViewed}`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Количество просмотров'
+              }
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Товары'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    createChart(currentChartType);
+
+    toggleBtn.addEventListener('click', () => {
+      const chartTypes = ['bar', 'doughnut', 'pie', 'line'];
+      const currentIndex = chartTypes.indexOf(currentChartType);
+      currentChartType = chartTypes[(currentIndex + 1) % chartTypes.length];
+      
+      createChart(currentChartType);
+      
+      const icon = toggleBtn.querySelector('.arrow-icon');
+      icon.style.transform = 'rotate(180deg)';
+      setTimeout(() => {
+        icon.style.transform = 'rotate(0deg)';
+      }, 300);
+    });
+  });
+</script>
+{% endblock scripts %}

@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from .models import Brand, Color, Material, SliderImage
 from django.db.models import Q,F
+from django.core.paginator import Paginator
 
 def index(request):
     if request.method == "POST":
@@ -69,6 +70,7 @@ def product_detail(request, slug):
     )
 
 
+
 def product_list(request):
     if request.method == "POST":
         form = OrderProductForm(request.POST)
@@ -78,21 +80,37 @@ def product_list(request):
             return JsonResponse({"success": False, "errors": form.errors})
 
     form = OrderProductForm()
+    selected_categories = request.GET.getlist('category')
+    selected_brands = request.GET.getlist('brand')
+    selected_colors = request.GET.getlist('color')
+    selected_materials = request.GET.getlist('material')
     categories = Category.objects.all()
-    category_id = request.GET.get("category")
+    category_ids = request.GET.getlist("category")  # Получаем список ID категорий
     min_price = request.GET.get("min_price")
     max_price = request.GET.get("max_price")
     discount = request.GET.get("discount")
+    brand_ids = request.GET.getlist("brand")  # Список ID брендов
+    color_ids = request.GET.getlist("color")  # Список ID цветов
+    material_ids = request.GET.getlist("material")  # Список ID материалов
+    min_width = request.GET.get("min_width")
+    max_width = request.GET.get("max_width")
+    min_height = request.GET.get("min_height")
+    max_height = request.GET.get("max_height")
+    min_depth = request.GET.get("min_depth")
+    max_depth = request.GET.get("max_depth")
+    
     brands = Brand.objects.filter(product__isnull=False).distinct()
     colors = Color.objects.filter(product__isnull=False).distinct()
     materials = Material.objects.filter(product__isnull=False).distinct()
+    
+    # Начальный queryset
     products = Product.objects.filter(available=True)
-    selected_category = None
-
-    if category_id:
-        selected_category = Category.objects.filter(id=category_id).first()
-        products = products.filter(category_id=category_id)
-
+    
+    # Фильтрация по категориям (если выбраны)
+    if category_ids:
+        products = products.filter(category_id__in=category_ids)
+    
+    # Фильтрация по цене
     if min_price:
         try:
             res = str_to_decimal(min_price)
@@ -107,23 +125,118 @@ def product_list(request):
         except ValidationError as e:
             print(f"Ошибка в max_price: {e}")
 
+    # Фильтрация по скидке
     if discount == "1":
         products = products.filter(discount__gt=0)
+    
+    # Фильтрация по брендам
+    if brand_ids:
+        products = products.filter(brand_id__in=brand_ids)
+    
+    # Фильтрация по цветам
+    if color_ids:
+        products = products.filter(color_id__in=color_ids)
+    
+    # Фильтрация по материалам
+    if material_ids:
+        products = products.filter(material_id__in=material_ids)
+    
+    # Фильтрация по габаритам
+    if min_width:
+        products = products.filter(width__gte=min_width)
+    if max_width:
+        products = products.filter(width__lte=max_width)
+    if min_height:
+        products = products.filter(height__gte=min_height)
+    if max_height:
+        products = products.filter(height__lte=max_height)
+    if min_depth:
+        products = products.filter(depth__gte=min_depth)
+    if max_depth:
+        products = products.filter(depth__lte=max_depth)
+    
+    # Пагинация
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(
         request,
         "products/product_list.html",
         {
-            "products": products,
+            "products": page_obj,
             "categories": categories,
-            "t": category_id,
             "form": form,
-            "sel_cat": selected_category,
-            "brands":brands,
-            "colors":colors,
-            "materials":materials,
+            "brands": brands,
+            "colors": colors,
+            "materials": materials,
+            "min_price": min_price,
+            "max_price": max_price,
+            "selected_categories": selected_categories,
+            "selected_brands": selected_brands,
+            "selected_colors": selected_colors,
+            "selected_materials": selected_materials,
         },
     )
+
+
+
+
+# def product_list(request):
+#     if request.method == "POST":
+#         form = OrderProductForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#         else:
+#             return JsonResponse({"success": False, "errors": form.errors})
+
+#     form = OrderProductForm()
+#     categories = Category.objects.all()
+#     category_id = request.GET.get("category")
+#     min_price = request.GET.get("min_price")
+#     max_price = request.GET.get("max_price")
+#     discount = request.GET.get("discount")
+#     brands = Brand.objects.filter(product__isnull=False).distinct()
+#     colors = Color.objects.filter(product__isnull=False).distinct()
+#     materials = Material.objects.filter(product__isnull=False).distinct()
+#     products = Product.objects.filter(available=True)
+#     selected_category = None
+
+#     if category_id:
+#         selected_category = Category.objects.filter(id=category_id).first()
+#         products = products.filter(category_id=category_id)
+
+#     if min_price:
+#         try:
+#             res = str_to_decimal(min_price)
+#             products = products.filter(sale_price__gte=res)
+#         except ValidationError as e:
+#             print(f"Ошибка в min_price: {e}")
+
+#     if max_price:
+#         try:
+#             res = str_to_decimal(max_price)
+#             products = products.filter(sale_price__lte=res)
+#         except ValidationError as e:
+#             print(f"Ошибка в max_price: {e}")
+
+#     if discount == "1":
+#         products = products.filter(discount__gt=0)
+
+#     return render(
+#         request,
+#         "products/product_list.html",
+#         {
+#             "products": products,
+#             "categories": categories,
+#             "t": category_id,
+#             "form": form,
+#             "sel_cat": selected_category,
+#             "brands":brands,
+#             "colors":colors,
+#             "materials":materials,
+#         },
+#     )
 
 
 def products_feedback(request, product_id):

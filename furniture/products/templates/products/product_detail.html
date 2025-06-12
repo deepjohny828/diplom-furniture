@@ -5,6 +5,15 @@
 {% endblock title %}
 {% block style %}
 <link rel="stylesheet" href={% static "products/css/product-detail.css" %}>
+<style>
+    .desc{
+        margin: 0;
+        color: var(--color-text-primary);
+        word-wrap: break-word; /* Перенос длинных слов */
+        overflow-wrap: break-word; /* Альтернатива для некоторых браузеров */
+        hyphens: auto; /* Автоматическое добавление переносов */
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -88,7 +97,7 @@
         {% if product.description %}
         <div class="description">
             <h3>Описание:</h3>
-            <p>{{ product.description }}</p>
+            <p class="desc">{{ product.description }}</p>
         </div>
         {% endif %}
         <div class="card-buttons">

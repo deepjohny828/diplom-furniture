@@ -11,6 +11,7 @@
 {% endblock style %}
 
 {% block content %}
+{% if slider_images %}
 <div class="slider" id="bannerSlider">
     <div class="slides" id="slidesWrapper">
         {% for slider_image in slider_images %}
@@ -31,6 +32,7 @@
     <div class="dots" id="dotsContainer"></div>
 </div>
 <div>
+{% endif %}
     <h2 class="title-hits">Новинка</h2>
     <div class="products">
         <div class="products-inner">
@@ -48,6 +50,7 @@
                     {% endif %}
                     </div>
                     <p>{{ product.name }}</p>
+                    <p class="p-description">{{product.description}}</p>
                 </a>
                 <div class="card-buttons">
                     <a href={% url "add_to_compare" product.id %}>
@@ -124,8 +127,10 @@
         <a class="a-all-offers"  href={% url "product_list" %}><button class="button-all-offers">Посмотреть все предложения...</button></a>
     </div>
     <div class="about-company">
-        <img src={% static 'products/img/test.jpg' %} class="hide-img" alt="Тест">
-        <div class="about-text"><h2>О компании</h2><p>Бизнес-идея ООО "Вертикаль" — экономия времени и денег наших клиентов.</p><a href="#">Подробнее →</a></div>
+        <img src={% static 'products/img/index.png' %} class="hide-img" alt="Тест">
+        <div class="about-text"><h2>О компании</h2><p>Бизнес-идея ООО "Вертикаль" — экономия времени и денег наших клиентов.</p>
+            {% comment %} <a href="#">Подробнее →</a> {% endcomment %}
+        </div>
     </div>
     <form action={% url "feedback" %} method="post" class="subscribe">
         {% csrf_token %}
