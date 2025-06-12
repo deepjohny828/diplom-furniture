@@ -1,0 +1,21 @@
+@media (max-width: 768px) {
+    .products{
+       overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        padding: 1rem; 
+    }
+    .products-inner{
+        display: flex;
+        gap: 1rem;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
+    .product-card{
+        flex: 0 0 auto;
+        width: 200px;
+        scroll-snap-align: start;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+}

@@ -6,7 +6,7 @@ from products.forms import OrderProductForm
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from .models import Brand, Color, Material, SliderImage
-from django.db.models import Q
+from django.db.models import Q,F
 
 def index(request):
     if request.method == "POST":
@@ -20,12 +20,14 @@ def index(request):
     form = OrderProductForm()
     products = Product.objects.filter(available=True)[:4]
     discounted_new_products = Product.objects.filter(available=True, discount__gt=0).order_by('-created_at')[:4]
+    popular_products = Product.objects.filter(available=True).order_by('-views')[:4]
     return render(
         request,
         "products/index.html",
         {"products": products, "form": form, "new_products": new_products,
          "discounted_new_products": discounted_new_products,
-         "slider_images": slider_images,},
+         "slider_images": slider_images,
+         "popular_products":popular_products},
     )
 
 def product_search(request):
@@ -55,6 +57,12 @@ def product_detail(request, slug):
         else:
             return JsonResponse({"success": False, "errors": form.errors})
     res = get_object_or_404(Product, slug=slug, available=True)
+
+    if f'compared_{slug}' not in request.session:
+        Product.objects.filter(slug=slug).update(views=F('views') + 1)
+        request.session[f'compared_{slug}'] = True
+        request.session.modified = True
+
     form = OrderProductForm()
     return render(
         request, "products/product_detail.html", {"product": res, "form": form}
@@ -137,6 +145,11 @@ def add_to_compare(request, product_id):
     compare = request.session.get("compare", [])
     if product_id not in compare:
         compare.append(product_id)
+        if f'compared_{product_id}' not in request.session:
+            Product.objects.filter(pk=product_id).update(compare_count=F('compare_count') + 1)
+            request.session[f'compared_{product_id}'] = True
+            request.session.modified = True
+        
     request.session["compare"] = compare
     return redirect("compare_view")
 

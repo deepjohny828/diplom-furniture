@@ -7,6 +7,7 @@
 
 {% block style %}
 <link rel="stylesheet" href={% static "products/css/catalog-style.css" %}>
+<link rel="stylesheet" href={% static "products/css/for_index.css" %}>
 {% endblock style %}
 
 {% block content %}
@@ -94,10 +95,10 @@
     </div>
 </div>
 <div>
-    <h2 class="title-hits">Распродажа</h2>
+    <h2 class="title-hits">Популярные товары</h2>
     <div class="products">
     <div class="products-inner">
-        {% for product in discounted_new_products %}
+        {% for product in popular_products %}
         <div class="product-card">
             <div class="item" data-id="{{ product.id }}"></div>
             <a href="{% url 'product_detail' product.slug %}">
@@ -123,13 +124,13 @@
         <a class="a-all-offers"  href={% url "product_list" %}><button class="button-all-offers">Посмотреть все предложения...</button></a>
     </div>
     <div class="about-company">
-        <img src={% static 'products/img/test.jpg' %} alt="Тест">
+        <img src={% static 'products/img/test.jpg' %} class="hide-img" alt="Тест">
         <div class="about-text"><h2>О компании</h2><p>Бизнес-идея ООО "Вертикаль" — экономия времени и денег наших клиентов.</p><a href="#">Подробнее →</a></div>
     </div>
     <form action={% url "feedback" %} method="post" class="subscribe">
         {% csrf_token %}
         <h2>Подпишись на получение свежих акций!</h2>
-        <input type="email" placeholder="Ваш E-mail" name="sss">
+        <input type="email" placeholder="Ваш E-mail" name="sss" required>
         <button>Подписаться</button>
     </form>
 </div>

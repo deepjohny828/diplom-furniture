@@ -164,22 +164,11 @@ class Product(models.Model):
         help_text="Отобразит бейджик 'Новинка' у товара"
     )
 
-    def clean(self):
-        super().clean()
-        selected_fields = [self.is_seasonal, self.is_bestseller, self.is_new]
-        if sum(selected_fields) > 1:
-            raise ValidationError("Можно выбрать только один статус (Сезонный, Хит продаж или Новинка)!")
-
     views = models.PositiveIntegerField(
         verbose_name="Просмотры",
         default=0,
         editable=False,
         db_index=True,
-    )
-    purchases_count = models.PositiveIntegerField(
-        verbose_name="Количество покупок",
-        default=0,
-        editable=False
     )
     compare_count = models.PositiveIntegerField(
         verbose_name="Количество сравнений",
@@ -191,6 +180,14 @@ class Product(models.Model):
     @property
     def price_with_discount(self):
         return round((self.sale_price - (self.sale_price * self.discount) / 100), 2)
+
+
+    def clean(self):
+        super().clean()
+        selected_fields = [self.is_seasonal, self.is_bestseller, self.is_new]
+        true_count = sum(selected_fields)
+        if true_count > 1:
+            raise ValidationError("Можно выбрать только один статус (Сезонный, Хит продаж или Новинка)!")
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -204,6 +201,8 @@ class Product(models.Model):
             )
         if self.sale_price < self.price:
             raise ValueError("Цена продажи не может быть ниже закупочной цены")
+        if self.is_sold:
+            self.available = False
         super().save(*args, **kwargs)
         
     class Meta:

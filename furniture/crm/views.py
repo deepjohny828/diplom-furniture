@@ -26,18 +26,21 @@ def index(request):
             'name': purchase.product.name,
             'price': float(purchase.purchase_price),
             'type_operation': "Закупки",
-            'count': 1
         })
     for sale in sales:
         elements.append({
             'name':sale.name,
             'price': float(sale.sale_price),
             'type_operation': "Продажи",
-            'count': 1
         })
 
-    paginator = Paginator(elements, 3)
+    paginator = Paginator(elements, 15)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request,"crm/main.html",{'elements':elements,'page_obj':page_obj})
+
+
+@staff_member_required
+def view_count(request):
+    pass
 

@@ -1,5 +1,6 @@
 from django.urls import path
-from crm.views import index
+from crm import views
 urlpatterns = [
-    path("",index,name="crm_index"),
+    path("",views.index,name="crm_index"),
+    path("views/",views.view_count,name="view_count")
 ]

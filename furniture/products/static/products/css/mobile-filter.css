@@ -1,0 +1,137 @@
+/* Кнопка фильтров для мобильных */
+.mobile-filters-btn {
+    display: none;
+    padding: 12px 20px;
+    background-color: var(--color-accent-green);
+    color: white;
+    border: none;
+    border-radius: var(--radius-button);
+    margin: 15px auto;
+    font-size: 16px;
+    cursor: pointer;
+    width: 90%;
+    max-width: 300px;
+    transition: all 0.3s ease;
+}
+
+.mobile-filters-btn:hover {
+    background-color: #6a8d6e;
+    box-shadow: var(--shadow-hover);
+}
+
+.mobile-filters-btn i {
+    margin-right: 8px;
+}
+
+/* Оверлей фильтров */
+.mobile-filters-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-filters-overlay.show {
+    opacity: 1;
+}
+
+.mobile-filters-content {
+    background: var(--color-bg-main);
+    padding: var(--padding-card);
+    border-radius: var(--radius-card);
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-hover);
+    position: relative;
+}
+
+.close-filters {
+    order: 1;
+    font-size: 35px;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    transition: color 0.2s ease;
+}
+
+.close-filters:hover {
+    color: var(--color-text-primary);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.apply-filters, .reset-filters {
+    flex: 1;
+    padding: 12px;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.apply-filters {
+    background-color: var(--color-accent-green);
+    color: white;
+    border: none;
+}
+
+.apply-filters:hover {
+    background-color: #6a8d6e;
+}
+
+.reset-filters {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    display: block;
+    margin-top: 10px;
+}
+
+.reset-filters:hover {
+    background-color: var(--color-border);
+}
+.header-filters{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 35px;
+}
+/* Адаптивность */
+@media (max-width: 768px) {
+    .mobile-filters-btn {
+        display: block;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+    
+}
+@media(max-width:700px){
+    .mobile-filters-overlay{
+        padding:0;
+    }
+    .mobile-filters-content{
+        margin:0;
+    }
+}
+@media(max-width: 537px){
+    form.mobile-filter > div{
+        flex-direction: column;
+    }
+}

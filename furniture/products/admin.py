@@ -231,10 +231,13 @@ class ProductAdmin(admin.ModelAdmin):
         "is_sold",
         "available",
         "updated_at",
+        "views",
+        "compare_count"
+
     )
     fieldsets = (
         ("Аналитика",
-            {"fields":("views","purchases_count","compare_count")}
+            {"fields":("views","compare_count")}
          ),
         (
             "Основная информация",
@@ -257,7 +260,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     )
 
-    readonly_fields = ("updated_at",'created_at',"views","purchases_count","compare_count")
+    readonly_fields = ("updated_at",'created_at',"views","compare_count")
     list_filter = ("available", "is_sold", "category", "brand", "color", "material")
     search_fields = ("name", "article_number", "slug")
 
