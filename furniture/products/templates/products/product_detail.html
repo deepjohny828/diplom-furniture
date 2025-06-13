@@ -9,16 +9,15 @@
     .desc{
         margin: 0;
         color: var(--color-text-primary);
-        word-wrap: break-word; /* Перенос длинных слов */
-        overflow-wrap: break-word; /* Альтернатива для некоторых браузеров */
-        hyphens: auto; /* Автоматическое добавление переносов */
+        word-wrap: break-word;
+        overflow-wrap: break-word; 
+        hyphens: auto; 
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="product-container">
-    <!-- Галерея -->
     <div class="gallery">
         <div class="thumbnails">
             {% for img in product.gallery.all %}
@@ -30,7 +29,6 @@
         </div>
     </div>
 
-    <!-- Информация о товаре -->
     <div class="product-info">
         <div class="item" data-id="{{ product.id }}"></div>
         <h1>{{ product.name }}</h1>
@@ -131,25 +129,25 @@
 <script>
     function setMainImage(src) {
         const mainImg = document.getElementById('mainImage');
-        // Добавляем анимацию перехода
+        
         mainImg.style.opacity = '0';
         setTimeout(() => {
             mainImg.src = src;
             mainImg.style.opacity = '1';
         }, 200);
         
-        // Подсвечиваем выбранную миниатюру
+        
         document.querySelectorAll('.thumb').forEach(thumb => {
             thumb.style.borderColor = thumb.src === src ? 'var(--primary-color)' : 'transparent';
         });
     }
     
     document.addEventListener('DOMContentLoaded', function() {
-        // Добавляем интерактивность кнопке
+        
         const orderBtn = document.getElementById('openModalBtn');
         if (orderBtn) {
             orderBtn.addEventListener('click', function() {
-                // Здесь можно добавить обработчик для модального окна
+                
                 console.log('Order product:', this.dataset.product_id);
             });
         }

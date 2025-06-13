@@ -31,6 +31,11 @@
       color: var(--color-accent-green);
       font-weight: bold;
     }
+    @media (max-width: 768px){
+        .paginator{
+            grid-column: unset;
+        }
+    }
 </style>
 {% endblock style %}
 
@@ -43,12 +48,12 @@
   {% endif %}
 </h2>
 
-<!-- Кнопка для мобильных фильтров -->
+
 <button class="mobile-filters-btn" id="mobileFiltersBtn">
     <i class="fas fa-filter"></i> Фильтры
 </button>
 
-<!-- Модальное окно фильтров для мобильных -->
+
 <div class="mobile-filters-overlay" id="mobileFiltersOverlay">
     <div class="mobile-filters-content">
         <div class="header-filters">
@@ -56,7 +61,7 @@
             <h3>Фильтры</h3>
         </div>
         <form class="mobile-filter" method="get" action="{% url 'product_list' %}">
-            <!-- Фильтр по цене -->
+            
             <div class="price-range">
                 <h3>Цена</h3>
                 <div class="price-range-inp">
@@ -67,7 +72,7 @@
                 </div>
             </div>
 
-            <!-- Фильтр по скидке -->
+            
             <div>
                 <h3>Скидка</h3>
                 <label>
@@ -77,8 +82,7 @@
                 </label>
             </div>
 
-            <!-- Фильтр по категориям -->
-            <!-- Фильтр по категориям в виде чекбоксов -->
+            
             <div>
                 <h3>Категории</h3>
                 {% for category in categories %}
@@ -90,7 +94,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по брендам в виде чекбоксов -->
+           
             <div>
                 <h3>Бренды</h3>
                 {% for brand in brands %}
@@ -102,7 +106,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по цветам (оставляем как было) -->
+            
             <div>
                 <h3>Цвета</h3>
                 {% for color in colors %}
@@ -114,7 +118,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по материалам (оставляем как было) -->
+            
             <div>
                 <h3>Материалы</h3>
                 {% for material in materials %}
@@ -126,7 +130,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по габаритам -->
+            
             <div>
                 <h3>Размеры</h3>
                 <div>
@@ -158,10 +162,10 @@
 </div>
 
 <div class="catalog-grid">
-  <!-- Фильтры (для десктопа) -->
+  
   <aside class="sidebar">
     <form method="get" action="{% url 'product_list' %}">
-        <!-- Фильтр по цене -->
+       
         <div class="price-range">
                 <h3>Цена</h3>
                 <div class="price-range-inp">
@@ -172,7 +176,7 @@
                 </div>
             </div>
 
-            <!-- Фильтр по скидке -->
+            
             <div>
                 <h3>Скидка</h3>
                 <label>
@@ -182,8 +186,7 @@
                 </label>
             </div>
 
-            <!-- Фильтр по категориям -->
-            <!-- Фильтр по категориям в виде чекбоксов -->
+            
             <div>
                 <h3>Категории</h3>
                 {% for category in categories %}
@@ -195,7 +198,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по брендам в виде чекбоксов -->
+            
             <div>
                 <h3>Бренды</h3>
                 {% for brand in brands %}
@@ -207,7 +210,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по цветам (оставляем как было) -->
+            
             <div>
                 <h3>Цвета</h3>
                 {% for color in colors %}
@@ -219,7 +222,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по материалам (оставляем как было) -->
+            
             <div>
                 <h3>Материалы</h3>
                 {% for material in materials %}
@@ -231,7 +234,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Фильтр по габаритам -->
+            
             <div>
                 <h3>Размеры</h3>
                 <div>
@@ -259,7 +262,7 @@
     </form>
   </aside>
 
-  <!-- Карточки товаров -->
+ 
   <main class="products">
     {% for product in products %}
     <div class="product-card">

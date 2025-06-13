@@ -1,6 +1,6 @@
-db.sqlite3
+
 ph
 venv
 __pycache__
 media
-
+.vscode

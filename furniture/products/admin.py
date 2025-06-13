@@ -90,7 +90,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         try:
             changes = json.loads(obj.change_message)
         except Exception:
-            return obj.change_message  # если не JSON, вернуть как есть
+            return obj.change_message  
 
         messages = []
         for change in changes:
@@ -134,9 +134,8 @@ class OrderProductItemInline(admin.TabularInline):
     can_delete = False
     show_change_link = True
 
-    # Методы – только в readonly_fields
     readonly_fields = ("product_link", "product_price", "product_available", "product_is_sold")
-    # А в fields – те же названия
+
     fields = ("product_link", "product_price", "product_available", "product_is_sold")
 
     def product_link(self, obj):
