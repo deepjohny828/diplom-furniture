@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 from products.models import Purchase,Product
 from django.core.paginator import Paginator
-from django.db.models import Count
+
 
 
 @staff_member_required
@@ -49,14 +49,12 @@ def view_count(request):
     max_views = request.GET.get('max_views')
 
     # Получаем все продукты для диаграммы (без пагинации)
-    all_products = Product.objects.annotate(
-        views_count=Count('views')
-    ).exclude(views=0).order_by('-views_count')
+    all_products = Product.objects.filter(is_sold=False)
 
     if min_views:
-        all_products = all_products.filter(views_count__gte=min_views)
+        all_products = all_products.filter(views__gte=min_views)
     if max_views:
-        all_products = all_products.filter(views_count__lte=max_views)
+        all_products = all_products.filter(views__lte=max_views)
 
     # Пагинация только для таблицы
     paginator = Paginator(all_products, 25)  # 2 элемента на страницу для примера

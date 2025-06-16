@@ -3,7 +3,6 @@
 {% block title %}
   Аналитика просмотров товаров
 {% endblock title %}
-
 {% block content %}
 
 <div id="div-myChart">
@@ -42,7 +41,7 @@
             <tr>
                 <td class="product-name">{{ product.name }}</td>
                 <td class="views-count">{{ product.views }}</td>
-                <td class="last-viewed">{{ product.views_count}}</td>
+                <td class="last-viewed">{{ product.compare_count}}</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -79,14 +78,11 @@
       {% for product in all_products %}
         { 
           name: '{{ product.name|escapejs }}', 
-          views: {{ product.views_count }},
-          lastViewed: '{{ product.last_viewed|date:"d.m.Y" }}'
+          views: {{ product.views }},
         },
       {% endfor %}
     ];
 
-    // Остальной код остается без изменений
-    products.sort((a, b) => b.views - a.views);
     
     function createChart(type) {
       if (myChart) {
@@ -140,9 +136,16 @@
               }
             },
             x: {
+              ticks: {
+                font: {
+                  size: 14, // Размер шрифта
+                  weight: 'bold' // Жирный шрифт (опционально)
+                }
+              },
               title: {
                 display: true,
                 text: 'Товары'
+                
               }
             }
           }

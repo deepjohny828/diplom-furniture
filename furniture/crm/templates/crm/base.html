@@ -276,6 +276,9 @@
             <li>
                 <a href={% url "view_count" %}>Количество просмотров</a>
             </li>
+            <li>
+              {% block other %}{% endblock other %}
+            </li>
         </ul>
     </header>
 {% block content %}

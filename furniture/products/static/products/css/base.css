@@ -448,7 +448,7 @@ a:hover {
 
 .footer {
     background: var(--color-bg-main);
-    padding: 50px 20px;
+    padding: 0 20px 20px 0;
     border-radius: 40px 40px 0 0;
 }
 
@@ -563,6 +563,9 @@ header, .container, .footer, .footer-columns, .mega-menu {
     }
     .container {
         max-width: 100%;
+    }
+    .footer{
+        padding:0;
     }
     .products {
         padding: 0;
