@@ -19,8 +19,9 @@ class Category(models.Model):
         return self.name
 
 class Feedback(models.Model):
-    email = models.EmailField(verbose_name="Email")
-    
+    email = models.EmailField(verbose_name="Почта")
+    consent = models.BooleanField("Согласие на обработку", default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.email
     class Meta:

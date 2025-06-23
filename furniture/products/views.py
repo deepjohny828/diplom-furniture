@@ -1,24 +1,50 @@
+from pyexpat.errors import messages
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from products.models import Product, Category,Feedback
 from products.func import str_to_decimal
 from django.core.exceptions import ValidationError
-from products.forms import OrderProductForm
+from products.forms import FeedbackForm, OrderProductForm
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from .models import Brand, Color, Material, SliderImage
 from django.db.models import Q,F
 from django.core.paginator import Paginator
 
+
+
+
 def index(request):
     if request.method == "POST":
-        form = OrderProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-        else:
-            return JsonResponse({"success": False, "errors": form.errors})
+        if 'phone' in request.POST:
+            form = OrderProductForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                errors = {}
+                for field, error_list in form.errors.items():
+                    errors[field] = [str(e) for e in error_list]
+                return JsonResponse({
+                    "success": False,
+                    "errors": errors
+                })
+        elif 'email' in request.POST:
+            form = FeedbackForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                errors = {}
+                for field, error_list in form.errors.items():
+                    errors[field] = [str(e) for e in error_list]
+                return JsonResponse({
+                    "success": False,
+                    "errors": errors
+                })
     slider_images = SliderImage.objects.all()
     new_products = Product.objects.filter(available=True).order_by("-created_at")[:4]
     form = OrderProductForm()
+    formtwo = FeedbackForm
     products = Product.objects.filter(available=True)[:4]
     discounted_new_products = Product.objects.filter(available=True, discount__gt=0).order_by('-created_at')[:4]
     popular_products = Product.objects.filter(available=True).order_by('-views')[:4]
@@ -28,7 +54,8 @@ def index(request):
         {"products": products, "form": form, "new_products": new_products,
          "discounted_new_products": discounted_new_products,
          "slider_images": slider_images,
-         "popular_products":popular_products},
+         "popular_products":popular_products,
+         "formtwo":formtwo},
     )
 
 def product_search(request):
@@ -52,11 +79,18 @@ def product_search(request):
 
 def product_detail(request, slug):
     if request.method == "POST":
-        form = OrderProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-        else:
-            return JsonResponse({"success": False, "errors": form.errors})
+            form = OrderProductForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                errors = {}
+                for field, error_list in form.errors.items():
+                    errors[field] = [str(e) for e in error_list]
+                return JsonResponse({
+                    "success": False,
+                    "errors": errors
+                })
     res = get_object_or_404(Product, slug=slug, available=True)
 
     if f'compared_{slug}' not in request.session:
@@ -73,11 +107,18 @@ def product_detail(request, slug):
 
 def product_list(request):
     if request.method == "POST":
-        form = OrderProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-        else:
-            return JsonResponse({"success": False, "errors": form.errors})
+            form = OrderProductForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'success': True})
+            else:
+                errors = {}
+                for field, error_list in form.errors.items():
+                    errors[field] = [str(e) for e in error_list]
+                return JsonResponse({
+                    "success": False,
+                    "errors": errors
+                })
 
     form = OrderProductForm()
     selected_categories = request.GET.getlist('category')
@@ -180,15 +221,15 @@ def product_list(request):
 
 
 
-def products_feedback(request, product_id):
+# def products_feedback(request, product_id):
 
-    if request.method == "POST":
-        form = OrderProductForm(request.POST)
-        if form.is_valid():
-            new_request = form.save(commit=False)
-            new_request.product = product_id
-            new_request.save()
-        return HttpResponse(new_request)
+#     if request.method == "POST":
+#         form = OrderProductForm(request.POST)
+#         if form.is_valid():
+#             new_request = form.save(commit=False)
+#             new_request.product = product_id
+#             new_request.save()
+#         return HttpResponse(new_request)
 
 
 def contacts(request):
@@ -230,8 +271,15 @@ def group_products(request):
         form = OrderProductForm(request.POST)
         if form.is_valid():
             form.save()
+            return JsonResponse({'success': True})
         else:
-            return JsonResponse({"success": False, "errors": form.errors})
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(e) for e in error_list]
+            return JsonResponse({
+                "success": False,
+                "errors": errors
+            })
     form = OrderProductForm()
     if group != []:
         final_price = 0
@@ -283,13 +331,23 @@ def remove_from_group_products(request, product_id):
     else:
         return redirect("/")
 
-def feedback(request):
-    if request.method == "POST":
-        req = request.POST['sss']
-        obj = Feedback(email=req)
-        obj.save()
-    return redirect("index")
+# def feedback_view(request):
+#     if request.method == 'POST':
+#         form = FeedbackForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Вы успешно подписаны на рассылку!')
+#             return redirect('feedback_success')
+#     else:
+#         form = FeedbackForm()
+    
+#     return render(request, 'feedback/form.html', {'form': form})
 
+# def feedback_success(request):
+#     return render(request, 'feedback/success.html')
+
+def privacy_policy(request):
+    return render(request,"products/privacy-policy.html")
 
 # Пока не реализовано
 def page_not_found(request,exception):

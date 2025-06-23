@@ -163,15 +163,20 @@
         <a class="a-all-offers"  href={% url "product_list" %}><button class="button-all-offers">Посмотреть все предложения...</button></a>
     </div>
     <div class="about-company">
-        <img src={% static 'products/img/index.png' %} class="hide-img" alt="Тест">
+        <img src={% static 'products/img/index.jpg' %} class="hide-img" alt="Тест">
         <div class="about-text"><h2>О компании</h2><p>Бизнес-идея ООО "Вертикаль" — экономия времени и денег наших клиентов.</p>
         </div>
     </div>
-    <form action={% url "feedback" %} method="post" class="subscribe">
+    <form id="contactForm" method="post" style="text-align: center;display:flex;flex-direction: column;justify-content: center;align-items: center;margin: auto; gap:15px;width:50%;">
         {% csrf_token %}
         <h2>Подпишись на получение свежих акций!</h2>
-        <input type="email" placeholder="Ваш E-mail" name="sss" required>
-        <button>Подписаться</button>
+        {{ formtwo.email }}
+        <label for="consent">
+            {{ formtwo.consent }}
+            <span>Я согласен на обработку персональных данных в соответствии с </span>
+            <a href={% url "privacy_policy" %} target="_blank" style="color: #0066cc;">Политикой конфиденциальности</a>.
+        </label>
+        <button type="submit">Подписаться</button>
     </form>
 </div>
 {% endblock content %}

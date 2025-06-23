@@ -30,6 +30,7 @@ btn.forEach(e => {
         });
 
         modal.style.display = "block";
+        document.body.style.overflow = 'hidden'; 
     }
     
 
@@ -39,20 +40,19 @@ btn.forEach(e => {
     // Закрываем модальное окно при клике на крестик
 span.onclick = function() {
     modal.style.display = "none";
+    document.body.style.overflow = ''; 
 }
     
     // Закрываем модальное окно при клике вне его
 window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
+        document.body.style.overflow = ''; 
     }
 }
     
     // Обработка отправки формы
-form.onsubmit = function(e) {
-        
-        // Здесь можно добавить код для отправки данных формы
-        // alert("Форма отправлена! Спасибо за ваше сообщение.");
-        // Очищаем форму и закрываем модальное окно
+form.onsubmit = function() {
     modal.style.display = "none";
+    document.body.style.overflow = ''; 
 }

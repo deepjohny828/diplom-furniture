@@ -295,7 +295,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ("email_formatted",)
+    list_display = ("email_formatted","consent")
     def email_formatted(self,obj):
         return f"Почта пользователя для получения скидок: {obj.email}"
     email_formatted.short_description = "Почты пользователей"
